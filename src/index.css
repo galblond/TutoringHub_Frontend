@@ -1,0 +1,16 @@
+body {
+  margin: 0;
+  font-family: 'CircularStd';
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+@font-face {
+  font-family: 'CircularStd';
+  src: local('CircularStd'), url(./assets/fonts/CircularStd-Book.ttf) format('truetype');
+}
+
+@font-face {
+  font-family: 'CircularStdBold';
+  src: local('CircularStdBold'), url(./assets/fonts/CircularStd-Bold.ttf) format('truetype');
+}
