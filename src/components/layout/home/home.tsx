@@ -2,9 +2,12 @@ import React, { useEffect, useState } from "react";
 import useStyles from "./homeStyles";
 import AppMainBackgroundTop from "../../../assets/images/appMainBackgroundTop.png";
 import AppMainBackgroundBottom from "../../../assets/images/appMainBackgroundBottom.png";
+import SignIn from "../auth/signIn/signIn";
+import { useHistory } from "react-router-dom";
 
 const Home = () => {
   const classes = useStyles();
+  let history = useHistory();
 
   return (
     <div className={classes.root}>
@@ -15,8 +18,17 @@ const Home = () => {
       <button className={classes.rootBtn}>Join Us!</button>
       <div className={classes.signInText}>
         <span>Already have an account?</span>
-        <span className={classes.signInClickableText}> Sign In </span>
+        <span
+          className={classes.signInClickableText}
+          onClick={() => {
+            history.push("/SignIn");
+          }}
+        >
+          {" "}
+          Sign In{" "}
+        </span>
       </div>
+      {/* <SignIn /> */}
     </div>
   );
 };

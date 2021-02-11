@@ -2,7 +2,7 @@ import React from "react";
 import SignIn from "../../components/layout/auth/signIn/signIn";
 import useStyles from "./signInPageStyles";
 
-const HomePage = () => {
+const SignInPage = () => {
   const classes = useStyles();
 
   return (
@@ -12,4 +12,4 @@ const HomePage = () => {
   );
 };
 
-export default HomePage;
+export default SignInPage;

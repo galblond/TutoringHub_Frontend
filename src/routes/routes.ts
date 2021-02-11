@@ -1,4 +1,7 @@
+import { Signer } from "crypto";
+import SignIn from "../components/layout/auth/signIn/signIn";
 import HomePage from "../pages/homePage/homePage";
+import SignInPage from "../pages/signInPage/signInPage";
 
 interface AppRoute {
   exactPath: string;
@@ -9,11 +12,16 @@ interface AppRoute {
 }
 
 const routes: AppRoute[] = [
-      {
-        exactPath: "/",
-        component: HomePage,
-        isForSignedUsers: false,
-      },
+  {
+    exactPath: "/",
+    component: HomePage,
+    isForSignedUsers: false,
+  },
+  {
+    exactPath: "/SignIn",
+    component: SignInPage,
+    isForSignedUsers: false,
+  },
 ];
 
 export default routes;
