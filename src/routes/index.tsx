@@ -1,22 +1,25 @@
 import React, { useEffect, useState } from "react";
+import ScrollToTop from "../components/shared/scroll-to-top";
 import { HashRouter, Switch } from "react-router-dom";
 import ProtectedRoute from "./protected-route";
 import routes from "./routes";
 
 const Routes = () => {
-  const [isReloadRequired, setIsReloadRequired] = useState<Boolean>(false);
-
-  useEffect(() => {
-    setIsReloadRequired(!isReloadRequired);
-  }, [window.location]);
-
   return (
     <HashRouter>
-      <Switch>
-        {routes.map((route, index) => (
-          <ProtectedRoute key={index} component={route.component} isForSignedUsers={route.isForSignedUsers} />
-        ))}
-      </Switch>
+      <ScrollToTop>
+        <Switch>
+          {routes.map((route, index) => (
+            <ProtectedRoute
+              key={index}
+              exact
+              path={route.exactPath}
+              component={route.component}
+              isForSignedUsers={route.isForSignedUsers}
+            />
+          ))}
+        </Switch>
+      </ScrollToTop>
     </HashRouter>
   );
 };

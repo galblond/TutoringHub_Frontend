@@ -2,6 +2,7 @@ import { Signer } from "crypto";
 import SignIn from "../components/layout/auth/signIn/signIn";
 import HomePage from "../pages/homePage/homePage";
 import SignInPage from "../pages/signInPage/signInPage";
+import TeacherManagementPage from "../pages/teacherManagementPage/teacherManagementPage";
 
 interface AppRoute {
   exactPath: string;
@@ -22,6 +23,11 @@ const routes: AppRoute[] = [
     component: SignInPage,
     isForSignedUsers: false,
   },
+  {
+    exactPath: "/teacherManagement",
+    component: TeacherManagementPage,
+    isForSignedUsers: false, // TODO change to true when sign in process is working
+  }
 ];
 
 export default routes;
