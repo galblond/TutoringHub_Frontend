@@ -53,7 +53,6 @@ const useStyles = makeStyles((theme: Theme) => ({
     width: "85vw",
     height: "6vh",
     margin: 30,
-    // color: "white",
   },
   fieldColor: {
     color: "white",
@@ -67,22 +66,25 @@ const useStyles = makeStyles((theme: Theme) => ({
   passwordFieldName: {
     marginLeft: 30,
   },
-  paper: {
-    marginTop: theme.spacing(8),
-    display: "flex",
-    flexDirection: "column",
-    alignItems: "center",
+  customInputLabel: {
+    color: "#928097",
+    "&.Mui-focused": {
+      color: "#E8EBF5",
+    },
   },
-  avatar: {
-    margin: theme.spacing(1),
-    backgroundColor: theme.palette.secondary.main,
+  customInputUnderline: {
+    "&:before": {
+      borderBottom: "2px solid #928097",
+    },
+    "&:after": {
+      borderBottom: "2px solid #E8EBF5",
+    },
   },
-  form: {
-    width: "100%", // Fix IE 11 issue.
-    marginTop: theme.spacing(1),
-  },
-  submit: {
-    margin: theme.spacing(3, 0, 2),
+  customInput: {
+    color: "#E8EBF5",
+    "&:after": {
+      color: "#E8EBF5",
+    },
   },
 }));
 

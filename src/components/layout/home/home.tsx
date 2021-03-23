@@ -1,34 +1,37 @@
 import React, { useEffect, useState } from "react";
 import useStyles from "./homeStyles";
-import AppMainBackgroundTop from "../../../assets/images/appMainBackgroundTop.png";
-import AppMainBackgroundBottom from "../../../assets/images/appMainBackgroundBottom.png";
-import SignIn from "../auth/signIn/signIn";
 import { useHistory } from "react-router-dom";
+import AppBar from "@material-ui/core/AppBar";
+import Toolbar from "@material-ui/core/Toolbar";
+import Typography from "@material-ui/core/Typography";
+import Button from "@material-ui/core/Button";
+import IconButton from "@material-ui/core/IconButton";
+import MenuIcon from "@material-ui/icons/Menu";
+import Login from "../auth/login/login";
 
 const Home = () => {
   const classes = useStyles();
   let history = useHistory();
 
   return (
-    <div className={classes.root}>
-      {/* <img src={} alt={AppMainBackgroundTop} className={classes.appBackgroundTop} /> */}
-      <div className={classes.welcomeText}> Welcome To </div>
-      <div className={classes.logoText}> TutoringHub </div>
-      {/* <img  alt={} className={classes.appBackgroundBottom} /> */}
-      <button className={classes.rootBtn}>Join Us!</button>
-      <div className={classes.signInText}>
-        <span>Already have an account?</span>
-        <span
-          className={classes.signInClickableText}
-          onClick={() => {
-            history.push("/SignIn");
-          }}
-        >
-          {" "}
-          Sign In{" "}
-        </span>
+    <div>
+      <div className={classes.root}>
+        <AppBar position="static" color="transparent">
+          <Toolbar>
+            <IconButton edge="start" className={classes.menuButton} color="inherit" aria-label="menu">
+              <MenuIcon />
+            </IconButton>
+            <Typography variant="h6" className={classes.title}>
+              Tutoring Hub
+            </Typography>
+            <Button color="inherit">Login</Button>
+          </Toolbar>
+        </AppBar>
+        {/* <Login /> */}
       </div>
-      {/* <SignIn /> */}
+      <div className={classes.logInCard}>
+        <Login />
+      </div>
     </div>
   );
 };
