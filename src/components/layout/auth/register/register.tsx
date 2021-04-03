@@ -1,128 +1,100 @@
+// import { FormControl, IconButton, Input, InputAdornment, InputLabel, TextField } from "@material-ui/core";
+// import { Lock, MailOutline, Visibility, VisibilityOff } from "@material-ui/icons";
 import React, { useContext, useEffect, useState } from "react";
-import useStyles from "./registerStyles";
+// import useStyles from "../../../../pages/loginPage/loginPageStyles";
 // import AppMainBackgroundTop from "../../../../assets/images/appMainBackgroundTop.png";
-import { FormControl, IconButton, Input, InputAdornment, InputLabel, TextField } from "@material-ui/core";
-import { Lock, MailOutline } from "@material-ui/icons";
-import Visibility from "@material-ui/icons/Visibility";
-import VisibilityOff from "@material-ui/icons/VisibilityOff";
-import { useHistory } from "react-router-dom";
-// import firebase from "firebase";
-// import { AuthContext } from "../../../../AuthProvider";
+import { useHistory } from "react-router";
+// import ApartmentItem from "../../apartmentItem/apartmentItem";
+import useStyles from "./registerStyles";
+import { Button, FormControl, IconButton, Input, InputAdornment, InputLabel, Typography } from "@material-ui/core";
+import { Lock, Visibility, VisibilityOff } from "@material-ui/icons";
+import { IUserPresentedData } from "../../../../services/TeacherService";
 
-const Register = () => {
+interface IUserPassword {
+  password: string;
+  passwordConfirm: string;
+  showPassword: boolean;
+  showPasswordConfirm: boolean;
+}
+
+interface IUserData {
+  fullName: string;
+  email: string;
+  password: string;
+  passwordConfirm: string;
+}
+
+const Register: React.FC<{}> = (props) => {
   const classes = useStyles();
   let history = useHistory();
-  // const authContext = useContext(AuthContext);
-
-  interface FormItems {
-    showPassword: boolean;
-    username: string;
-    phone: string;
-    email: string;
-    password: string;
-  }
-
-  const [values, setValues] = React.useState<FormItems>({
-    username: "",
-    email: "",
+  const [passwordValues, setPasswordValues] = useState<IUserPassword>({
     password: "",
-    phone: "",
+    passwordConfirm: "",
     showPassword: false,
+    showPasswordConfirm: false,
   });
 
-  const handleChange = (event: any) => {
-    event.persist();
-    setValues((values) => ({
-      ...values,
-      [event.target.name]: event.target.value,
-    }));
-  };
-  const handleSubmit = (event: any) => {
-    event?.preventDefault();
-    console.log(values, "values");
-    // firebase
-    //   .auth()
-    //   .createUserWithEmailAndPassword(values.email, values.password)
-    //   .then((userCredential: firebase.auth.UserCredential) => {
-    //     authContext.setUser(userCredential);
-    //     const db = firebase.firestore();
-    //     db.collection("Users")
-    //       .doc(userCredential.user!.uid)
-    //       .set({
-    //         email: values.email,
-    //         // username: values.username,
-    //         // phone: values.phone
-    //       })
-    //       .then(() => {
-    //         console.log("ok");
-    //         history.push("/questionnaires");
-    //       })
-    //       .catch((error) => {
-    //         console.log(error.message);
-    //         alert(error.message);
-    //       });
-    //   });
+  const [userData, setUserData] = useState<IUserData>({
+    fullName: "",
+    email: "",
+    password: "",
+    passwordConfirm: "",
+  });
+
+  const handleChange = (prop: keyof IUserPresentedData) => (event: React.ChangeEvent<HTMLInputElement>) => {
+    setUserData({
+      ...userData,
+      [prop]: event.target.value,
+    });
   };
 
-  const handleClickShowPassword = () => {
-    setValues({ ...values, showPassword: !values.showPassword });
+  const handlePasswordChange = (prop: keyof IUserPassword) => (event: React.ChangeEvent<HTMLInputElement>) => {
+    setPasswordValues({ ...passwordValues, [prop]: event.target.value });
   };
-  const handlePasswordChange = (prop: keyof FormItems) => (event: React.ChangeEvent<HTMLInputElement>) => {
-    setValues({ ...values, [prop]: event.target.value });
-  };
+
   const handleMouseDownPassword = (event: React.MouseEvent<HTMLButtonElement>) => {
     event.preventDefault();
   };
 
-  const onClickLogin = () => {
-    history.push("/login");
+  const handleClickShowPassword = () => {
+    setPasswordValues({ ...passwordValues, showPassword: !passwordValues.showPassword });
+  };
+
+  const handleClickShowPasswordConfirm = () => {
+    setPasswordValues({ ...passwordValues, showPasswordConfirm: !passwordValues.showPasswordConfirm });
   };
 
   return (
-    <div className={classes.root}>
-      {/* <img src={AppMainBackgroundTop} alt={AppMainBackgroundTop} className={classes.appBackgroundTop} /> */}
-      <div className={classes.logoText}> Sign Up</div>
-
-      <TextField
-        className={classes.emailField}
-        required
-        label="Email"
-        name="email"
-        InputLabelProps={{
-          classes: {
-            root: classes.customInputLabel,
-            outlined: classes.customInputLabel,
-          },
-        }}
-        InputProps={{
-          className: classes.fieldColor,
-          classes: { input: classes.customInput, underline: classes.customInputUnderline },
-          startAdornment: (
-            <InputAdornment position="start">
-              <MailOutline />
-            </InputAdornment>
-          ),
-        }}
-        onChange={handleChange}
-      />
+    <div className={classes.signInCard}>
+      <Typography component="h1" variant="h5" color="inherit">
+        Sign Up
+      </Typography>
       <FormControl>
-        <InputLabel
-          className={classes.passwordFieldName}
-          classes={{
-            root: classes.customInputLabel,
-            outlined: classes.customInputLabel,
-          }}
-          required
-          htmlFor="standard-adornment-password"
-        >
+        <InputLabel className={classes.inputLabel} shrink={true}>
+          Full name
+        </InputLabel>
+        <Input
+          className={classes.input}
+          type={"text"}
+          value={userData.fullName || ""}
+          onChange={handleChange("fullName")}
+        />
+      </FormControl>
+      <FormControl>
+        <InputLabel className={classes.inputLabel} shrink={true}>
+          Email
+        </InputLabel>
+        <Input className={classes.input} type={"text"} value={userData.email || ""} onChange={handleChange("email")} />
+      </FormControl>
+      <FormControl>
+        <InputLabel className={classes.passwordFieldName} required htmlFor="standard-adornment-password">
           Password
         </InputLabel>
         <Input
           className={classes.passwordField}
           id="standard-adornment-password"
-          type={values.showPassword ? "text" : "password"}
-          value={values.password}
-          classes={{ input: classes.customInput, underline: classes.customInputUnderline }}
+          type={passwordValues.showPassword ? "text" : "password"}
+          value={passwordValues.password}
           onChange={handlePasswordChange("password")}
           startAdornment={
             <InputAdornment position="start">
@@ -136,22 +108,52 @@ const Register = () => {
                 onClick={handleClickShowPassword}
                 onMouseDown={handleMouseDownPassword}
               >
-                {values.showPassword ? <Visibility /> : <VisibilityOff />}
+                {passwordValues.showPassword ? <Visibility /> : <VisibilityOff />}
               </IconButton>
             </InputAdornment>
           }
         />
       </FormControl>
-      <button className={classes.signUpBtn} onClick={handleSubmit}>
+      <FormControl>
+        <InputLabel className={classes.passwordFieldName} required htmlFor="standard-adornment-password">
+          Password Confirm
+        </InputLabel>
+        <Input
+          className={classes.passwordField}
+          id="standard-adornment-password"
+          type={passwordValues.showPasswordConfirm ? "text" : "password"}
+          value={passwordValues.passwordConfirm}
+          onChange={handlePasswordChange("passwordConfirm")}
+          startAdornment={
+            <InputAdornment position="start">
+              <Lock />
+            </InputAdornment>
+          }
+          endAdornment={
+            <InputAdornment position="end">
+              <IconButton
+                aria-label="toggle password visibility"
+                onClick={handleClickShowPasswordConfirm}
+                onMouseDown={handleMouseDownPassword}
+              >
+                {passwordValues.showPassword ? <Visibility /> : <VisibilityOff />}
+              </IconButton>
+            </InputAdornment>
+          }
+        />
+      </FormControl>
+      <Button
+        type="submit"
+        // fullWidth
+        variant="contained"
+        color="primary"
+        onClick={() => {
+          history.push("tabsMenu");
+        }}
+        className={classes.submit}
+      >
         Sign Up
-      </button>
-      <div className={classes.signInText}>
-        <span>Already have an account?</span>
-        <span className={classes.signInClickableText} onClick={onClickLogin}>
-          {" "}
-          Sign In{" "}
-        </span>
-      </div>
+      </Button>
     </div>
   );
 };

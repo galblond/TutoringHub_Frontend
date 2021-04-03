@@ -21,7 +21,7 @@ const routes: AppRoute[] = [
     isForSignedUsers: false,
   },
   {
-    exactPath: "/Register",
+    exactPath: "/register",
     component: RegisterPage,
     isForSignedUsers: false,
   },

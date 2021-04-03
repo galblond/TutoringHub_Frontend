@@ -53,38 +53,71 @@ const useStyles = makeStyles((theme: Theme) => ({
     width: "85vw",
     height: "6vh",
     margin: 30,
+    // color: "white",
   },
   fieldColor: {
     color: "white",
   },
+  // passwordField: {
+  //   color: "white",
+  //   margin: 30,
+  //   width: "85vw",
+  //   height: "6vh",
+  // },
+  // passwordFieldName: {
+  //   marginLeft: 30,
+  // },
+  paper: {
+    marginTop: theme.spacing(8),
+    display: "flex",
+    flexDirection: "column",
+    alignItems: "center",
+  },
+  avatar: {
+    margin: theme.spacing(1),
+    backgroundColor: theme.palette.secondary.main,
+  },
+  form: {
+    width: "100%", // Fix IE 11 issue.
+    marginTop: theme.spacing(1),
+  },
+  submit: {
+    margin: theme.spacing(3, 0, 2),
+  },
+  signInCard: {
+    top: "3vw",
+    left: "29vw",
+    width: "40vw",
+    height: "75vh",
+    backgroundColor: "white",
+    boxShadow: "0px 10px 40px #00000024",
+    borderRadius: 17,
+    opacity: 1,
+    position: "relative",
+  },
+  inputLabel: {
+    marginLeft: "3.26vh",
+    textAlign: "center",
+    font: "normal normal normal 2.84vh CircularStd",
+    letterSpacing: "0px",
+    color: "black",
+  },
+  input: {
+    color: "black",
+    marginRight: "3.26vh",
+    marginBottom: "4.26vh",
+    marginLeft: "3.26vh",
+    width: "30vw",
+    height: "6vh",
+  },
   passwordField: {
-    color: "white",
+    color: "black",
     margin: 30,
-    width: "85vw",
+    width: "30vw",
     height: "6vh",
   },
   passwordFieldName: {
     marginLeft: 30,
-  },
-  customInputLabel: {
-    color: "#928097",
-    "&.Mui-focused": {
-      color: "#E8EBF5",
-    },
-  },
-  customInputUnderline: {
-    "&:before": {
-      borderBottom: "2px solid #928097",
-    },
-    "&:after": {
-      borderBottom: "2px solid #E8EBF5",
-    },
-  },
-  customInput: {
-    color: "#E8EBF5",
-    "&:after": {
-      color: "#E8EBF5",
-    },
   },
 }));
 
