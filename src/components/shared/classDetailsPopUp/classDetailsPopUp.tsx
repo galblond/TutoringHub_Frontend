@@ -2,6 +2,7 @@ import React from "react";
 import useStyles from "./classDetailsPopUpStyles";
 import { classTypes, IClass } from "../../../services/TeacherService";
 import {
+  Button,
   Dialog,
   DialogTitle,
   FormControl,
@@ -108,6 +109,7 @@ const ClassDetailsPopUp: React.FC<IClassDetailsPopUpProps> = (props: IClassDetai
           <MenuItem value={classTypes.frontal}>Frontal</MenuItem>
         </Select>
       </FormControl>
+      <Button> Save </Button>
     </Dialog>
   );
 };
