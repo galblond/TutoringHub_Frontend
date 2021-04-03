@@ -9,6 +9,8 @@ import useStyles from "./registerStyles";
 import { Button, FormControl, IconButton, Input, InputAdornment, InputLabel, Typography } from "@material-ui/core";
 import { Lock, Visibility, VisibilityOff } from "@material-ui/icons";
 import { IUserPresentedData } from "../../../../services/TeacherService";
+import firebase from "firebase";
+import { AuthContext } from "../../../../AuthProvider";
 
 interface IUserPassword {
   password: string;
@@ -17,16 +19,19 @@ interface IUserPassword {
   showPasswordConfirm: boolean;
 }
 
-interface IUserData {
+interface FormItems {
+  showPassword: boolean;
   fullName: string;
+  phone: string;
   email: string;
   password: string;
-  passwordConfirm: string;
 }
 
 const Register: React.FC<{}> = (props) => {
   const classes = useStyles();
   let history = useHistory();
+  const authContext = useContext(AuthContext);
+
   const [passwordValues, setPasswordValues] = useState<IUserPassword>({
     password: "",
     passwordConfirm: "",
@@ -34,22 +39,26 @@ const Register: React.FC<{}> = (props) => {
     showPasswordConfirm: false,
   });
 
-  const [userData, setUserData] = useState<IUserData>({
+  const [values, setValues] = React.useState<FormItems>({
     fullName: "",
     email: "",
     password: "",
-    passwordConfirm: "",
+    phone: "",
+    showPassword: false,
   });
-
   const handleChange = (prop: keyof IUserPresentedData) => (event: React.ChangeEvent<HTMLInputElement>) => {
-    setUserData({
-      ...userData,
+    setValues({
+      ...values,
       [prop]: event.target.value,
     });
   };
 
   const handlePasswordChange = (prop: keyof IUserPassword) => (event: React.ChangeEvent<HTMLInputElement>) => {
     setPasswordValues({ ...passwordValues, [prop]: event.target.value });
+    setValues({
+      ...values,
+      password: event.target.value,
+    });
   };
 
   const handleMouseDownPassword = (event: React.MouseEvent<HTMLButtonElement>) => {
@@ -64,6 +73,34 @@ const Register: React.FC<{}> = (props) => {
     setPasswordValues({ ...passwordValues, showPasswordConfirm: !passwordValues.showPasswordConfirm });
   };
 
+  const handleSubmit = (event: any) => {
+    event?.preventDefault();
+    // console.log(values, "values");
+    firebase
+      .auth()
+      .createUserWithEmailAndPassword(values.email, values.password)
+      .then((userCredential: firebase.auth.UserCredential) => {
+        // authContext.setUser(userCredential);
+        const db = firebase.firestore();
+        const userUid = userCredential.user!.uid === null ? "" : userCredential.user!.uid;
+        db.collection("Users")
+          .doc(userUid)
+          .set({
+            email: values.email,
+            fullName: values.fullName,
+            // phone: values.phone
+          })
+          .then(() => {
+            console.log("ok");
+            history.push("tabsMenu");
+          })
+          .catch((error) => {
+            console.log(error.message);
+            alert(error.message);
+          });
+      });
+  };
+
   return (
     <div className={classes.signInCard}>
       <Typography component="h1" variant="h5" color="inherit">
@@ -76,7 +113,7 @@ const Register: React.FC<{}> = (props) => {
         <Input
           className={classes.input}
           type={"text"}
-          value={userData.fullName || ""}
+          value={values.fullName || ""}
           onChange={handleChange("fullName")}
         />
       </FormControl>
@@ -84,7 +121,7 @@ const Register: React.FC<{}> = (props) => {
         <InputLabel className={classes.inputLabel} shrink={true}>
           Email
         </InputLabel>
-        <Input className={classes.input} type={"text"} value={userData.email || ""} onChange={handleChange("email")} />
+        <Input className={classes.input} type={"text"} value={values.email || ""} onChange={handleChange("email")} />
       </FormControl>
       <FormControl>
         <InputLabel className={classes.passwordFieldName} required htmlFor="standard-adornment-password">
@@ -147,9 +184,7 @@ const Register: React.FC<{}> = (props) => {
         // fullWidth
         variant="contained"
         color="primary"
-        onClick={() => {
-          history.push("tabsMenu");
-        }}
+        onClick={handleSubmit}
         className={classes.submit}
       >
         Sign Up
