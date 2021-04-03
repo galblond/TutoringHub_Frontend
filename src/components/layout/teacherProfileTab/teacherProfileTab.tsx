@@ -9,6 +9,7 @@ interface IUserPassword {
   password: string;
   passwordConfirm: string;
   showPassword: boolean;
+  showPasswordConfirm: boolean;
 }
 
 const TeacherProfileTab: React.FC<{}> = () => {
@@ -18,6 +19,7 @@ const TeacherProfileTab: React.FC<{}> = () => {
     password: "",
     passwordConfirm: "",
     showPassword: false,
+    showPasswordConfirm: false,
   });
 
   const handleChange = (prop: keyof IUserPresentedData) => (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -37,6 +39,10 @@ const TeacherProfileTab: React.FC<{}> = () => {
 
   const handleClickShowPassword = () => {
     setPasswordValues({ ...passwordValues, showPassword: !passwordValues.showPassword });
+  };
+
+  const handleClickShowPasswordConfirm = () => {
+    setPasswordValues({ ...passwordValues, showPasswordConfirm: !passwordValues.showPasswordConfirm });
   };
 
   return (
@@ -98,7 +104,7 @@ const TeacherProfileTab: React.FC<{}> = () => {
         <Input
           className={classes.passwordField}
           id="standard-adornment-password"
-          type={passwordValues.showPassword ? "text" : "password"}
+          type={passwordValues.showPasswordConfirm ? "text" : "password"}
           value={passwordValues.passwordConfirm}
           onChange={handlePasswordChange("passwordConfirm")}
           startAdornment={
@@ -110,7 +116,7 @@ const TeacherProfileTab: React.FC<{}> = () => {
             <InputAdornment position="end">
               <IconButton
                 aria-label="toggle password visibility"
-                onClick={handleClickShowPassword}
+                onClick={handleClickShowPasswordConfirm}
                 onMouseDown={handleMouseDownPassword}
               >
                 {passwordValues.showPassword ? <Visibility /> : <VisibilityOff />}

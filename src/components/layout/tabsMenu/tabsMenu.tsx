@@ -58,6 +58,7 @@ import Box from "@material-ui/core/Box";
 import PieChartComponent from "../pieChart/pieChart";
 import useStyles from "./tabsMenuStyle";
 import TeacherProfileTab from "../teacherProfileTab/teacherProfileTab";
+import TeacherClassesTab from "../teacherClassesTab/teacherClassesTab";
 // import { PieChart } from "@material-ui/icons";
 
 interface TabPanelProps {
@@ -137,7 +138,7 @@ export default function FullWidthTabs() {
           onChangeIndex={handleChangeIndex}
         >
           <TabPanel value={value} index={0} dir={theme.direction}>
-            My Classes
+            <TeacherClassesTab />
           </TabPanel>
           <TabPanel value={value} index={1} dir={theme.direction}>
             {/* Item Two */}

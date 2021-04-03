@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { IUserPresentedData } from "../services/TeacherService";
+import { IClass, IUserPresentedData, TeacherService } from "../services/TeacherService";
 import GeneralContext from "./GeneralContext";
 
 const GeneralState = (props: any) => {
@@ -8,6 +8,13 @@ const GeneralState = (props: any) => {
     fullName: "",
     email: "",
   });
+  const [teacherRelatedClassesState, setTeacherRelatedClassesState] = useState<IClass[]>([]);
+
+  const getTeacherRelatedClasses = () => {
+    TeacherService.getAllRelatedClasses().then((teacherRelatedClasses) =>
+      setTeacherRelatedClassesState(teacherRelatedClasses)
+    );
+  };
 
   return (
     <GeneralContext.Provider
@@ -16,6 +23,8 @@ const GeneralState = (props: any) => {
         setIsUserSigned: setIsUserSignedState,
         userData: userDataState,
         setUserData: setUserDataState,
+        teacherRelatedClasses: teacherRelatedClassesState,
+        getTeacherRelatedClasses: getTeacherRelatedClasses,
       }}
     >
       {props.children}
