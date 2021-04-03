@@ -21,13 +21,15 @@ import LockOutlinedIcon from "@material-ui/icons/LockOutlined";
 import Typography from "@material-ui/core/Typography";
 import { makeStyles } from "@material-ui/core/styles";
 import Container from "@material-ui/core/Container";
+import firebase from "firebase";
+import { AuthContext } from "../../../../AuthProvider";
 
 interface loginProps {}
 
 const Login: React.FC<loginProps> = (props) => {
   const classes = useStyles();
   let history = useHistory();
-  // const authContext = useContext(AuthContext);
+  const authContext = useContext(AuthContext);
 
   interface UserData {
     email: string;
@@ -41,30 +43,22 @@ const Login: React.FC<loginProps> = (props) => {
     email: "",
   });
 
-  const handleChange = (event: any) => {
-    event.persist();
-    setValues((values) => ({
-      ...values,
-      [event.target.name]: event.target.value,
-    }));
-  };
-
   const handleSubmit = (event: any) => {
     console.log(values.email);
     console.log(values.password);
     event.preventDefault();
-    // firebase
-    //   .auth()
-    //   .signInWithEmailAndPassword(values.email, values.password)
-    //   .then((res) => {
-    //     authContext.setUser(res);
-    //     console.log(res, "res");
-    //     history.push("/apartmentsCatalog");
-    //   })
-    //   .catch((error) => {
-    //     console.log(error.message);
-    //     alert(error.message);
-    //   });
+    firebase
+      .auth()
+      .signInWithEmailAndPassword(values.email, values.password)
+      .then((res) => {
+        // authContext.setUser(res);
+        console.log(res, "res");
+        history.push("tabsMenu");
+      })
+      .catch((error) => {
+        console.log(error.message);
+        alert(error.message);
+      });
   };
 
   const handleClickShowPassword = () => {
@@ -75,6 +69,14 @@ const Login: React.FC<loginProps> = (props) => {
   };
   const handleMouseDownPassword = (event: React.MouseEvent<HTMLButtonElement>) => {
     event.preventDefault();
+  };
+
+  const handleChange = (event: any) => {
+    event.persist();
+    setValues((values) => ({
+      ...values,
+      [event.target.name]: event.target.value,
+    }));
   };
 
   return (
@@ -102,6 +104,7 @@ const Login: React.FC<loginProps> = (props) => {
             name="email"
             autoComplete="email"
             autoFocus
+            onChange={handleChange}
           />
           <TextField
             variant="outlined"
@@ -113,6 +116,7 @@ const Login: React.FC<loginProps> = (props) => {
             type="password"
             id="password"
             autoComplete="current-password"
+            onChange={handleChange}
           />
           {/* <FormControlLabel control={<Checkbox value="remember" color="primary" />} label="Remember me" /> */}
           <Button
@@ -120,9 +124,7 @@ const Login: React.FC<loginProps> = (props) => {
             fullWidth
             variant="contained"
             color="primary"
-            onClick={() => {
-              history.push("tabsMenu");
-            }}
+            onClick={handleSubmit}
             className={classes.submit}
           >
             Sign In
