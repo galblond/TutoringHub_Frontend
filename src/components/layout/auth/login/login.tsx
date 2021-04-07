@@ -51,7 +51,7 @@ const Login: React.FC<loginProps> = (props) => {
       .auth()
       .signInWithEmailAndPassword(values.email, values.password)
       .then((res) => {
-        // authContext.setUser(res);
+        authContext.setUser(res.user);
         console.log(res, "res");
         history.push("tabsMenu");
       })
