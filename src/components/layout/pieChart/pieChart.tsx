@@ -1,16 +1,18 @@
-import React, { useContext, useEffect } from "react";
-import { PieChart } from "react-minimal-pie-chart";
+import React, { useContext, useEffect, useState } from "react";
+import * as d3 from "d3";
+import Pie from "../statistics/statistic";
 
 const PieChartComponent: React.FC<{}> = (props) => {
+  const generateData = (value: any, length = 5) =>
+    d3.range(length).map((item, index) => ({
+      name: "adi",
+      value: 10,
+    }));
+
+  const [data, setData] = useState(generateData(10));
   return (
     <div>
-      <PieChart
-        data={[
-          { title: "One", value: 10, color: "#E38627" },
-          { title: "Two", value: 15, color: "#C13C37" },
-          { title: "Three", value: 20, color: "#6A2135" },
-        ]}
-      />
+      <Pie data={data} width={200} height={200} innerRadius={60} outerRadius={100} />
     </div>
   );
 };
