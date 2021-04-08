@@ -16,8 +16,8 @@ const TeacherProfileTab: React.FC<{}> = () => {
   const context = useContext(GeneralContext);
   const classes = useStyles();
   const [passwordValues, setPasswordValues] = useState<IUserPassword>({
-    password: "",
-    passwordConfirm: "",
+    password: context.userData.password || "",
+    passwordConfirm: context.userData.passwordConfirm || "",
     showPassword: false,
     showPasswordConfirm: false,
   });
@@ -47,17 +47,17 @@ const TeacherProfileTab: React.FC<{}> = () => {
 
   return (
     <div>
-      <FormControl>
+      {/* <FormControl>
         <InputLabel className={classes.inputLabel} shrink={true}>
           Full name
         </InputLabel>
         <Input
           className={classes.input}
           type={"text"}
-          value={context.userData.fullName || ""}
+          value={context.teacherRelatedClasses.name || ""}
           onChange={handleChange("fullName")}
         />
-      </FormControl>
+      </FormControl> */}
       <FormControl>
         <InputLabel className={classes.inputLabel} shrink={true}>
           Email

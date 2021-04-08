@@ -23,13 +23,16 @@ import { makeStyles } from "@material-ui/core/styles";
 import Container from "@material-ui/core/Container";
 import firebase from "firebase";
 import { AuthContext } from "../../../../AuthProvider";
+import { UserService } from "../../../../services/UserService";
+import { isContext } from "vm";
+import GeneralContext from "../../../../contexts/GeneralContext";
 
 interface loginProps {}
 
 const Login: React.FC<loginProps> = (props) => {
   const classes = useStyles();
   let history = useHistory();
-  const authContext = useContext(AuthContext);
+  const context = useContext(GeneralContext);
 
   interface UserData {
     email: string;
@@ -51,8 +54,13 @@ const Login: React.FC<loginProps> = (props) => {
       .auth()
       .signInWithEmailAndPassword(values.email, values.password)
       .then((res) => {
-        authContext.setUser(res.user);
-        console.log(res, "res");
+        context.setUserData({
+          uid: res.user?.uid || "",
+          fullName: "",
+          email: values.email,
+          password: values.password,
+          passwordConfirm: values.password,
+        });
         history.push("tabsMenu");
       })
       .catch((error) => {

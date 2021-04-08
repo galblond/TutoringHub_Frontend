@@ -5,13 +5,16 @@ import GeneralContext from "./GeneralContext";
 const GeneralState = (props: any) => {
   const [isUserSignedState, setIsUserSignedState] = useState(false);
   const [userDataState, setUserDataState] = useState<IUserPresentedData>({
+    uid: "",
     fullName: "",
     email: "",
+    password: "",
+    passwordConfirm: "",
   });
   const [teacherRelatedClassesState, setTeacherRelatedClassesState] = useState<IClass[]>([]);
 
   const getTeacherRelatedClasses = () => {
-    TeacherService.getAllRelatedClasses().then((teacherRelatedClasses) =>
+    TeacherService.getAllRelatedClasses(userDataState.uid).then((teacherRelatedClasses) =>
       setTeacherRelatedClassesState(teacherRelatedClasses)
     );
   };

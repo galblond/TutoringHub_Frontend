@@ -11,6 +11,8 @@ import { Lock, Visibility, VisibilityOff } from "@material-ui/icons";
 import { IUserPresentedData } from "../../../../services/TeacherService";
 import firebase from "firebase";
 import { AuthContext } from "../../../../AuthProvider";
+import { isContext } from "vm";
+import GeneralContext from "../../../../contexts/GeneralContext";
 
 interface IUserPassword {
   password: string;
@@ -31,6 +33,7 @@ const Register: React.FC<{}> = (props) => {
   const classes = useStyles();
   let history = useHistory();
   const authContext = useContext(AuthContext);
+  const context = useContext(GeneralContext);
 
   const [passwordValues, setPasswordValues] = useState<IUserPassword>({
     password: "",
@@ -83,7 +86,7 @@ const Register: React.FC<{}> = (props) => {
         // authContext.setUser(userCredential);
         const db = firebase.firestore();
         const userUid = userCredential.user!.uid === null ? "" : userCredential.user!.uid;
-        db.collection("Users")
+        db.collection("users")
           .doc(userUid)
           .set({
             email: values.email,
@@ -92,6 +95,13 @@ const Register: React.FC<{}> = (props) => {
           })
           .then(() => {
             console.log("ok");
+            context.setUserData({
+              uid: userUid,
+              fullName: values.fullName,
+              email: values.email,
+              password: values.password,
+              passwordConfirm: values.password,
+            });
             history.push("tabsMenu");
           })
           .catch((error) => {

@@ -2,12 +2,15 @@ import AxiosInstance from "./utils/AxiosInstance";
 
 export enum classTypes {
   zoom,
-  frontal
-};
+  frontal,
+}
 
 export interface IUserPresentedData {
+  uid: string;
   fullName: string;
   email: string;
+  password: string;
+  passwordConfirm: string;
 }
 
 export interface IClass {
@@ -21,15 +24,16 @@ export interface IClass {
 
 export interface ITeacher {
   id: string;
+  name: string;
   classes: IClass[];
 }
 
 export class TeacherService {
- 
-  static async getAllRelatedClasses() {
+  static async getAllRelatedClasses(id: string) {
     try {
       // TODO
-      // let result = await AxiosInstance.get(`/Teacher/relatedClasses`);
+
+      let result = await AxiosInstance.get(`/teachers/${id}`);
       // return result.data;
       const classes: IClass[] = [
         {

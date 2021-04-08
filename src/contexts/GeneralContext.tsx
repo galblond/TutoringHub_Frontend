@@ -3,8 +3,11 @@ import { IClass, IUserPresentedData } from "../services/TeacherService";
 
 const isUserSignedType: boolean = false;
 const userDataType: IUserPresentedData = {
+  uid: "",
   fullName: "",
   email: "",
+  password: "",
+  passwordConfirm: "",
 };
 const teacherRelatedClassesType: IClass[] = [];
 
