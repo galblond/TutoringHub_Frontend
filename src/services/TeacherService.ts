@@ -56,9 +56,22 @@ export interface ITeacher {
   firebaseId?: string;
 }
 
+
+export interface IServerTeacher {
+  id: string;
+  name: string;
+  gender?: Gender;
+  score?: Score;
+  education?: string;
+  availability?: boolean;
+  areas?: Area[];
+  tutoringSubjects?: IClass[];
+  firebaseId?: string;
+}
+
 export class TeacherService {
 
-  static async createTeacher(teacher: ITeacher) {
+  static async createTeacher(teacher: IServerTeacher) {
     let result;
 
     try {

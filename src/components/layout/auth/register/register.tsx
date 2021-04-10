@@ -3,7 +3,7 @@ import { useHistory } from "react-router";
 import useStyles from "./registerStyles";
 import { Button, FormControl, IconButton, Input, InputAdornment, InputLabel, Typography } from "@material-ui/core";
 import { Lock, Visibility, VisibilityOff } from "@material-ui/icons";
-import { ITeacher, IUserPresentedData, TeacherService } from "../../../../services/TeacherService";
+import { IServerTeacher, ITeacher, IUserPresentedData, TeacherService } from "../../../../services/TeacherService";
 import firebase from "firebase";
 import { AuthContext } from "../../../../AuthProvider";
 import GeneralContext from "../../../../contexts/GeneralContext";
@@ -29,8 +29,8 @@ const Register: React.FC<{}> = (props) => {
   const authContext = useContext(AuthContext);
   const context = useContext(GeneralContext);
 
-  const [teacherData, setTeacherData] = useState<ITeacher>({
-    _id: "",
+  const [teacherData, setTeacherData] = useState<IServerTeacher>({
+    id: "",
     name: "",
     education: "",
     availability: true,

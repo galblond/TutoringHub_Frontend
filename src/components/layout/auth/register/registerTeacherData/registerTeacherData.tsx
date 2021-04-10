@@ -1,11 +1,11 @@
 import React from "react";
 import { FormControl, Input, InputLabel, MenuItem, Select, Typography } from "@material-ui/core";
-import { Area, Gender, ITeacher } from "../../../../../services/TeacherService";
+import { Area, Gender, IServerTeacher, ITeacher } from "../../../../../services/TeacherService";
 import useStyles from "./registerTeacherDataStyles";
 
 interface IRegisterTeacherDataProps {
-  teacherData: ITeacher;
-  setTeacherData: (teacherData: ITeacher) => void;
+  teacherData: IServerTeacher;
+  setTeacherData: (teacherData: IServerTeacher) => void;
 }
 
 const RegisterTeacherData: React.FC<IRegisterTeacherDataProps> = (props: IRegisterTeacherDataProps) => {
