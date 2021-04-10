@@ -5,6 +5,26 @@ export enum classTypes {
   frontal,
 }
 
+export enum Gender {
+  Male = 0,
+  Female = 1,
+}
+
+export enum Score {
+  score_0 = 0,
+  score_1 = 1,
+  score_2 = 2,
+  score_3 = 3,
+  score_4 = 4,
+  score_5 = 5,
+}
+
+export enum Area {
+  south = 0,
+  north = 1,
+  central = 2,
+}
+
 export interface IUserPresentedData {
   uid: string;
   fullName: string;
@@ -15,72 +35,51 @@ export interface IUserPresentedData {
 
 export interface IClass {
   id: string;
-  subject: string;
-  city: string;
-  ageRangeMin: number;
-  ageRangeMax: number;
-  classType: classTypes;
+  subject?: string;
+  city?: string;
+  ageRangeMin?: number;
+  ageRangeMax?: number;
+  classType?: classTypes;
+  teacherId?: string;
+  // students?: Array<string>;
 }
 
 export interface ITeacher {
-  id: string;
+  _id: string;
   name: string;
-  classes: IClass[];
+  gender?: Gender;
+  score?: Score;
+  education?: string;
+  availability?: boolean;
+  areas?: Area[];
+  tutoringSubjects?: IClass[];
+  firebaseId?: string;
 }
 
 export class TeacherService {
-  static async getAllRelatedClasses(id: string) {
-    try {
-      // TODO
 
-      let result = await AxiosInstance.get(`/teachers/${id}`);
-      // return result.data;
-      const classes: IClass[] = [
-        {
-          id: "1",
-          subject: "Math",
-          city: "Holon",
-          ageRangeMin: 10,
-          ageRangeMax: 25,
-          classType: classTypes.zoom,
-        },
-        {
-          id: "2",
-          subject: "English",
-          city: "Tel Aviv",
-          ageRangeMin: 15,
-          ageRangeMax: 120,
-          classType: classTypes.frontal,
-        },
-        {
-          id: "3",
-          subject: "Physics",
-          city: "Bat Yam",
-          ageRangeMin: 15,
-          ageRangeMax: 18,
-          classType: classTypes.frontal,
-        },
-        {
-          id: "4",
-          subject: "Painting",
-          city: "Bat Yam",
-          ageRangeMin: 15,
-          ageRangeMax: 18,
-          classType: classTypes.frontal,
-        },
-        {
-          id: "5",
-          subject: "Chemistry",
-          city: "Bat Yam",
-          ageRangeMin: 30,
-          ageRangeMax: 99,
-          classType: classTypes.frontal,
-        },
-      ];
-      return classes;
+  static async createTeacher(teacher: ITeacher) {
+    let result;
+
+    try {
+      result = await AxiosInstance.post("/teachers", teacher);
     } catch (e) {
-      console.log(e);
       throw e;
     }
+
+    return result.data;
+  }
+
+  static async getTeacherByFirebaseId(firebaseId: string) {
+    let result;
+
+    try {
+      result = await AxiosInstance.get(`/teachers/firebaseId/${firebaseId}`);
+      console.log("teacherrrr => ", result.data[0])
+    } catch (e) {
+      throw e;
+    }
+
+    return result.data[0];
   }
 }

@@ -23,6 +23,13 @@ const useStyles = makeStyles((theme: Theme) => ({
     borderRadius: "2vh",
     position: "relative",
   },
+  userNameTitle: {
+    position: "absolute",
+    top: "12vh",
+    left: "12vh",
+    fontSize: "3.5vh",
+    fontFamily: "CircularStdBold",
+  },
 }));
 
 export default useStyles;

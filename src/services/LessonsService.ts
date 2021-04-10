@@ -8,13 +8,12 @@ export class LessonService {
 
     try {
       result = await AxiosInstance.post("/lessons", classData);
+      return classData;
     } catch (e) {
-      console.log("Class creation failed => ", e);
       throw e;
     }
 
-    console.log("Class creation succeeded => ", result.data);
-    return result.data;
+    return result;
   }
 
   static async updateClass(classData: IClass) {
@@ -22,17 +21,29 @@ export class LessonService {
 
     try {
       result = await AxiosInstance.post("/lessons", classData);
+      return classData;
     } catch (e) {
-      console.log("Class update failed => ", e);
       throw e;
     }
 
-    console.log("Class update succeeded => ", result.data);
-    return result.data;
+    return result;
   }
 
   static async deleteClass(id: string) {
     let result = await AxiosInstance.delete(`/lessons/${id}`);
     return result.data;
+  }
+
+  static async getAllRelatedClasses(teacherId: string) {
+    let result;
+
+    try {
+      result = await AxiosInstance.get(`/lessons/teacherId/${teacherId}`);
+    } catch (e) {
+      console.log(e);
+      throw e;
+    }
+
+    return result.data;;
   }
 }

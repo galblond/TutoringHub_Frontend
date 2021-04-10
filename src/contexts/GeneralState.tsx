@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { LessonService } from "../services/LessonsService";
-import { IClass, IUserPresentedData, TeacherService } from "../services/TeacherService";
+import { IClass, ITeacher, IUserPresentedData } from "../services/TeacherService";
 import { getAllCities, ICity } from "../services/utils/citiesUtil";
 import GeneralContext from "./GeneralContext";
 
@@ -13,11 +13,15 @@ const GeneralState = (props: any) => {
     password: "",
     passwordConfirm: "",
   });
+  const [currentlySignedTeacherState, setCurrentlySignedTeacherState] = useState<ITeacher>({
+    _id: "",
+    name: "",
+  });
   const [teacherRelatedClassesState, setTeacherRelatedClassesState] = useState<IClass[]>([]);
   const [citiesState, setCitiesState] = useState<ICity[]>([]);
 
   const getTeacherRelatedClasses = () => {
-    TeacherService.getAllRelatedClasses(userDataState.uid).then((teacherRelatedClasses) =>
+    LessonService.getAllRelatedClasses(currentlySignedTeacherState._id).then((teacherRelatedClasses) =>
       setTeacherRelatedClassesState(teacherRelatedClasses)
     );
   };
@@ -57,6 +61,8 @@ const GeneralState = (props: any) => {
         getAllCities: getAllCitiesFromAPI,
         createClass: createClass,
         updateClass: updateClass,
+        currentlySignedTeacher: currentlySignedTeacherState,
+        setCurrentlySignedTeacher: setCurrentlySignedTeacherState,
       }}
     >
       {props.children}

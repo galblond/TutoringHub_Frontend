@@ -47,7 +47,7 @@
 // };
 
 // export default TabsMenu;
-import React from "react";
+import React, { useContext } from "react";
 import SwipeableViews from "react-swipeable-views";
 import { makeStyles, Theme, useTheme } from "@material-ui/core/styles";
 import AppBar from "@material-ui/core/AppBar";
@@ -59,6 +59,7 @@ import PieChartComponent from "../pieChart/pieChart";
 import useStyles from "./tabsMenuStyle";
 import TeacherProfileTab from "../teacherProfileTab/teacherProfileTab";
 import TeacherClassesTab from "../teacherClassesTab/teacherClassesTab";
+import GeneralContext from "../../../contexts/GeneralContext";
 // import { PieChart } from "@material-ui/icons";
 
 interface TabPanelProps {
@@ -105,6 +106,7 @@ function a11yProps(index: any) {
 export default function FullWidthTabs() {
   const classes = useStyles();
   const theme = useTheme();
+  const context = useContext(GeneralContext);
   const [value, setValue] = React.useState(0);
 
   const handleChange = (event: React.ChangeEvent<{}>, newValue: number) => {
@@ -116,39 +118,46 @@ export default function FullWidthTabs() {
   };
 
   return (
-    <div className={classes.tabCard}>
-      <div className={classes.root}>
-        <AppBar position="static" color="default">
-          <Tabs
-            value={value}
-            onChange={handleChange}
-            indicatorColor="primary"
-            textColor="primary"
-            variant="fullWidth"
-            aria-label="full width tabs example"
+    <>
+      {context.currentlySignedTeacher.name && (
+        <Typography variant="h6" className={classes.userNameTitle}>
+          Hello, {context.currentlySignedTeacher.name}
+        </Typography>
+      )}
+      <div className={classes.tabCard}>
+        <div className={classes.root}>
+          <AppBar position="static" color="default">
+            <Tabs
+              value={value}
+              onChange={handleChange}
+              indicatorColor="primary"
+              textColor="primary"
+              variant="fullWidth"
+              aria-label="full width tabs example"
+            >
+              <Tab label="My Classes" {...a11yProps(0)} />
+              <Tab label="Statistics" {...a11yProps(1)} />
+              <Tab label="Profile" {...a11yProps(2)} />
+            </Tabs>
+          </AppBar>
+          <SwipeableViews
+            axis={theme.direction === "rtl" ? "x-reverse" : "x"}
+            index={value}
+            onChangeIndex={handleChangeIndex}
           >
-            <Tab label="My Classes" {...a11yProps(0)} />
-            <Tab label="Statistics" {...a11yProps(1)} />
-            <Tab label="Profile" {...a11yProps(2)} />
-          </Tabs>
-        </AppBar>
-        <SwipeableViews
-          axis={theme.direction === "rtl" ? "x-reverse" : "x"}
-          index={value}
-          onChangeIndex={handleChangeIndex}
-        >
-          <TabPanel value={value} index={0} dir={theme.direction}>
-            <TeacherClassesTab />
-          </TabPanel>
-          <TabPanel value={value} index={1} dir={theme.direction}>
-            {/* Item Two */}
-            <PieChartComponent />
-          </TabPanel>
-          <TabPanel value={value} index={2} dir={theme.direction}>
-            <TeacherProfileTab />
-          </TabPanel>
-        </SwipeableViews>
+            <TabPanel value={value} index={0} dir={theme.direction}>
+              <TeacherClassesTab />
+            </TabPanel>
+            <TabPanel value={value} index={1} dir={theme.direction}>
+              {/* Item Two */}
+              <PieChartComponent />
+            </TabPanel>
+            <TabPanel value={value} index={2} dir={theme.direction}>
+              <TeacherProfileTab />
+            </TabPanel>
+          </SwipeableViews>
+        </div>
       </div>
-    </div>
+    </>
   );
 }

@@ -11,7 +11,7 @@ const useStyles = makeStyles((theme: Theme) => ({
     position: "fixed",
     width: "9vh",
     height: "9vh",
-    bottom: "2vh",
+    bottom: "6vh",
     right: "2vh",
     backgroundColor: "#0C9",
     color: "#FFF",

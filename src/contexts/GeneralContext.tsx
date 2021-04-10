@@ -1,5 +1,5 @@
 import React from "react";
-import { IClass, IUserPresentedData } from "../services/TeacherService";
+import { IClass, ITeacher, IUserPresentedData } from "../services/TeacherService";
 import { ICity } from "../services/utils/citiesUtil";
 
 const isUserSignedType: boolean = false;
@@ -12,6 +12,10 @@ const userDataType: IUserPresentedData = {
 };
 const teacherRelatedClassesType: IClass[] = [];
 const citiesType: ICity[] = [];
+const currentlySignedTeacherType: ITeacher = {
+  _id: "",
+  name: "",
+};
 
 export default React.createContext({
   isUserSigned: isUserSignedType,
@@ -24,4 +28,6 @@ export default React.createContext({
   cities: citiesType,
   createClass: (classData: IClass) => {},
   updateClass: (classData: IClass) => {},
+  currentlySignedTeacher: currentlySignedTeacherType,
+  setCurrentlySignedTeacher: (teacher: ITeacher) => {},
 });

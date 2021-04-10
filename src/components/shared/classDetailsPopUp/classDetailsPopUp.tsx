@@ -56,10 +56,12 @@ const ClassDetailsPopUp: React.FC<IClassDetailsPopUpProps> = (props: IClassDetai
   const [presentedSubject, setPresentedSubject] = React.useState<string>(props.classData?.city || "");
   const [presentedCity, setPresentedCity] = React.useState<string>(props.classData?.city || "");
   const [presentedAgeRange, setPresentedAgeRange] = React.useState<number[]>(
-    props.classData ? [props.classData.ageRangeMin, props.classData.ageRangeMax] : [0, 0]
+    props.classData && props.classData.ageRangeMin && props.classData.ageRangeMax
+      ? [props.classData.ageRangeMin, props.classData.ageRangeMax]
+      : [0, 0]
   );
   const [presentedClassType, setpresentedClassType] = React.useState<classTypes>(
-    props.classData ? props.classData.classType : classTypes.zoom
+    props.classData && props.classData.classType ? props.classData.classType : classTypes.zoom
   );
 
   const handleClose = () => {
@@ -79,6 +81,7 @@ const ClassDetailsPopUp: React.FC<IClassDetailsPopUpProps> = (props: IClassDetai
   };
 
   const saveClass = () => {
+    console.log("context.currentlySignedTeacher.id => ", context.currentlySignedTeacher._id);
     if (props.classData) {
       context.updateClass({
         id: props.classData.id,
@@ -87,6 +90,7 @@ const ClassDetailsPopUp: React.FC<IClassDetailsPopUpProps> = (props: IClassDetai
         ageRangeMin: presentedAgeRange[0],
         ageRangeMax: presentedAgeRange[1],
         classType: presentedClassType,
+        teacherId: context.currentlySignedTeacher._id,
       });
     } else {
       context.createClass({
@@ -96,8 +100,10 @@ const ClassDetailsPopUp: React.FC<IClassDetailsPopUpProps> = (props: IClassDetai
         ageRangeMin: presentedAgeRange[0],
         ageRangeMax: presentedAgeRange[1],
         classType: presentedClassType,
+        teacherId: context.currentlySignedTeacher._id,
       });
     }
+    handleClose();
   };
 
   return (

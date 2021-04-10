@@ -37,7 +37,9 @@ const ClassCard: React.FC<IClassCardProps> = (props: IClassCardProps) => {
         <div className={classes.classSubject}>{props.classData.subject}</div>
         <div className={classes.classAdditionalData}>{props.classData.city}</div>
         <div className={classes.classAdditionalData}>
-          {props.classData.ageRangeMin.toString() + " - " + props.classData.ageRangeMax.toString()}
+          {props.classData.ageRangeMin &&
+            props.classData.ageRangeMax &&
+            props.classData.ageRangeMin.toString() + " - " + props.classData.ageRangeMax.toString()}
         </div>
         <div className={classes.classActionButtons}>
           <Button onClick={() => setIsClassPopUpOpen(true)}>

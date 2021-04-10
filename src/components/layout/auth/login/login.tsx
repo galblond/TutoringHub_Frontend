@@ -26,6 +26,7 @@ import { AuthContext } from "../../../../AuthProvider";
 import { UserService } from "../../../../services/UserService";
 import { isContext } from "vm";
 import GeneralContext from "../../../../contexts/GeneralContext";
+import { TeacherService } from "../../../../services/TeacherService";
 
 interface loginProps {}
 
@@ -52,15 +53,25 @@ const Login: React.FC<loginProps> = (props) => {
       .auth()
       .signInWithEmailAndPassword(values.email, values.password)
       .then((res) => {
-        context.setIsUserSigned(true);
-        context.setUserData({
-          uid: res.user?.uid || "",
-          fullName: "",
-          email: values.email,
-          password: values.password,
-          passwordConfirm: values.password,
-        });
-        history.push("tabsMenu");
+        if (res.user) {
+          TeacherService.getTeacherByFirebaseId(res.user.uid)
+            .then((teacher) => {
+              context.setUserData({
+                uid: res.user?.uid || "",
+                fullName: "",
+                email: values.email,
+                password: values.password,
+                passwordConfirm: values.password,
+              });
+              context.setCurrentlySignedTeacher(teacher);
+              context.setIsUserSigned(true);
+              history.push("tabsMenu");
+            })
+            .catch((error) => {
+              console.log(error.message);
+              alert(error.message);
+            });
+        }
       })
       .catch((error) => {
         console.log(error.message);

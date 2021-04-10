@@ -1,18 +1,13 @@
-// import { FormControl, IconButton, Input, InputAdornment, InputLabel, TextField } from "@material-ui/core";
-// import { Lock, MailOutline, Visibility, VisibilityOff } from "@material-ui/icons";
 import React, { useContext, useEffect, useState } from "react";
-// import useStyles from "../../../../pages/loginPage/loginPageStyles";
-// import AppMainBackgroundTop from "../../../../assets/images/appMainBackgroundTop.png";
 import { useHistory } from "react-router";
-// import ApartmentItem from "../../apartmentItem/apartmentItem";
 import useStyles from "./registerStyles";
 import { Button, FormControl, IconButton, Input, InputAdornment, InputLabel, Typography } from "@material-ui/core";
 import { Lock, Visibility, VisibilityOff } from "@material-ui/icons";
-import { IUserPresentedData } from "../../../../services/TeacherService";
+import { ITeacher, IUserPresentedData, TeacherService } from "../../../../services/TeacherService";
 import firebase from "firebase";
 import { AuthContext } from "../../../../AuthProvider";
-import { isContext } from "vm";
 import GeneralContext from "../../../../contexts/GeneralContext";
+import RegisterTeacherData from "./registerTeacherData/registerTeacherData";
 
 interface IUserPassword {
   password: string;
@@ -23,7 +18,6 @@ interface IUserPassword {
 
 interface FormItems {
   showPassword: boolean;
-  fullName: string;
   phone: string;
   email: string;
   password: string;
@@ -35,6 +29,16 @@ const Register: React.FC<{}> = (props) => {
   const authContext = useContext(AuthContext);
   const context = useContext(GeneralContext);
 
+  const [teacherData, setTeacherData] = useState<ITeacher>({
+    _id: "",
+    name: "",
+    education: "",
+    availability: true,
+    areas: [],
+  });
+
+  const [inTeacherDataStage, setInTeacherDataStage] = useState(true);
+
   const [passwordValues, setPasswordValues] = useState<IUserPassword>({
     password: "",
     passwordConfirm: "",
@@ -43,12 +47,12 @@ const Register: React.FC<{}> = (props) => {
   });
 
   const [values, setValues] = React.useState<FormItems>({
-    fullName: "",
     email: "",
     password: "",
     phone: "",
     showPassword: false,
   });
+
   const handleChange = (prop: keyof IUserPresentedData) => (event: React.ChangeEvent<HTMLInputElement>) => {
     setValues({
       ...values,
@@ -78,7 +82,6 @@ const Register: React.FC<{}> = (props) => {
 
   const handleSubmit = (event: any) => {
     event?.preventDefault();
-    // console.log(values, "values");
     firebase
       .auth()
       .createUserWithEmailAndPassword(values.email, values.password)
@@ -90,19 +93,29 @@ const Register: React.FC<{}> = (props) => {
           .doc(userUid)
           .set({
             email: values.email,
-            fullName: values.fullName,
-            // phone: values.phone
+            fullName: teacherData.name,
           })
           .then(() => {
             console.log("ok");
-            context.setUserData({
-              uid: userUid,
-              fullName: values.fullName,
-              email: values.email,
-              password: values.password,
-              passwordConfirm: values.password,
-            });
-            history.push("tabsMenu");
+            teacherData.firebaseId = userUid;
+            TeacherService.createTeacher(teacherData)
+              .then((createdTeacher) => {
+                console.log("createdTeacher => ", createdTeacher);
+                context.setUserData({
+                  uid: userUid,
+                  fullName: teacherData.name,
+                  email: values.email,
+                  password: values.password,
+                  passwordConfirm: values.password,
+                });
+                context.setCurrentlySignedTeacher(createdTeacher);
+                context.setIsUserSigned(true);
+                history.push("tabsMenu");
+              })
+              .catch((error) => {
+                console.log(error.message);
+                alert(error.message);
+              });
           })
           .catch((error) => {
             console.log(error.message);
@@ -112,94 +125,105 @@ const Register: React.FC<{}> = (props) => {
   };
 
   return (
-    <div className={classes.signInCard}>
-      <Typography component="h1" variant="h5" color="inherit">
-        Sign Up
-      </Typography>
-      <FormControl>
-        <InputLabel className={classes.inputLabel} shrink={true}>
-          Full name
-        </InputLabel>
-        <Input
-          className={classes.input}
-          type={"text"}
-          value={values.fullName || ""}
-          onChange={handleChange("fullName")}
-        />
-      </FormControl>
-      <FormControl>
-        <InputLabel className={classes.inputLabel} shrink={true}>
-          Email
-        </InputLabel>
-        <Input className={classes.input} type={"text"} value={values.email || ""} onChange={handleChange("email")} />
-      </FormControl>
-      <FormControl>
-        <InputLabel className={classes.passwordFieldName} required htmlFor="standard-adornment-password">
-          Password
-        </InputLabel>
-        <Input
-          className={classes.passwordField}
-          id="standard-adornment-password"
-          type={passwordValues.showPassword ? "text" : "password"}
-          value={passwordValues.password}
-          onChange={handlePasswordChange("password")}
-          startAdornment={
-            <InputAdornment position="start">
-              <Lock />
-            </InputAdornment>
-          }
-          endAdornment={
-            <InputAdornment position="end">
-              <IconButton
-                aria-label="toggle password visibility"
-                onClick={handleClickShowPassword}
-                onMouseDown={handleMouseDownPassword}
-              >
-                {passwordValues.showPassword ? <Visibility /> : <VisibilityOff />}
-              </IconButton>
-            </InputAdornment>
-          }
-        />
-      </FormControl>
-      <FormControl>
-        <InputLabel className={classes.passwordFieldName} required htmlFor="standard-adornment-password">
-          Password Confirm
-        </InputLabel>
-        <Input
-          className={classes.passwordField}
-          id="standard-adornment-password"
-          type={passwordValues.showPasswordConfirm ? "text" : "password"}
-          value={passwordValues.passwordConfirm}
-          onChange={handlePasswordChange("passwordConfirm")}
-          startAdornment={
-            <InputAdornment position="start">
-              <Lock />
-            </InputAdornment>
-          }
-          endAdornment={
-            <InputAdornment position="end">
-              <IconButton
-                aria-label="toggle password visibility"
-                onClick={handleClickShowPasswordConfirm}
-                onMouseDown={handleMouseDownPassword}
-              >
-                {passwordValues.showPassword ? <Visibility /> : <VisibilityOff />}
-              </IconButton>
-            </InputAdornment>
-          }
-        />
-      </FormControl>
-      <Button
-        type="submit"
-        // fullWidth
-        variant="contained"
-        color="primary"
-        onClick={handleSubmit}
-        className={classes.submit}
-      >
-        Sign Up
-      </Button>
-    </div>
+    <>
+      {inTeacherDataStage ? (
+        <>
+          <RegisterTeacherData teacherData={teacherData} setTeacherData={setTeacherData} />
+          <Button
+            variant="contained"
+            color="primary"
+            onClick={() => setInTeacherDataStage(false)}
+            className={classes.submit}
+          >
+            {">"}
+          </Button>
+        </>
+      ) : (
+        <div className={classes.signInCard}>
+          <Typography component="h1" variant="h5" color="inherit">
+            Sign Up
+          </Typography>
+          <FormControl>
+            <InputLabel className={classes.inputLabel} shrink={true}>
+              Email
+            </InputLabel>
+            <Input
+              className={classes.input}
+              type={"text"}
+              value={values.email || ""}
+              onChange={handleChange("email")}
+            />
+          </FormControl>
+          <FormControl>
+            <InputLabel className={classes.passwordFieldName} required htmlFor="standard-adornment-password">
+              Password
+            </InputLabel>
+            <Input
+              className={classes.passwordField}
+              id="standard-adornment-password"
+              type={passwordValues.showPassword ? "text" : "password"}
+              value={passwordValues.password}
+              onChange={handlePasswordChange("password")}
+              startAdornment={
+                <InputAdornment position="start">
+                  <Lock />
+                </InputAdornment>
+              }
+              endAdornment={
+                <InputAdornment position="end">
+                  <IconButton
+                    aria-label="toggle password visibility"
+                    onClick={handleClickShowPassword}
+                    onMouseDown={handleMouseDownPassword}
+                  >
+                    {passwordValues.showPassword ? <Visibility /> : <VisibilityOff />}
+                  </IconButton>
+                </InputAdornment>
+              }
+            />
+          </FormControl>
+          <FormControl>
+            <InputLabel className={classes.passwordFieldName} required htmlFor="standard-adornment-password">
+              Password Confirm
+            </InputLabel>
+            <Input
+              className={classes.passwordField}
+              id="standard-adornment-password"
+              type={passwordValues.showPasswordConfirm ? "text" : "password"}
+              value={passwordValues.passwordConfirm}
+              onChange={handlePasswordChange("passwordConfirm")}
+              startAdornment={
+                <InputAdornment position="start">
+                  <Lock />
+                </InputAdornment>
+              }
+              endAdornment={
+                <InputAdornment position="end">
+                  <IconButton
+                    aria-label="toggle password visibility"
+                    onClick={handleClickShowPasswordConfirm}
+                    onMouseDown={handleMouseDownPassword}
+                  >
+                    {passwordValues.showPassword ? <Visibility /> : <VisibilityOff />}
+                  </IconButton>
+                </InputAdornment>
+              }
+            />
+          </FormControl>
+          <Button
+            variant="contained"
+            color="primary"
+            onClick={() => setInTeacherDataStage(true)}
+            className={classes.submit}
+          >
+            {"<"}
+          </Button>
+          <Button type="submit" variant="contained" color="primary" onClick={handleSubmit} className={classes.submit}>
+            Sign Up
+          </Button>
+        </div>
+      )}
+    </>
   );
 };
 
