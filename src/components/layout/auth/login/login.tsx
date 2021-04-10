@@ -47,13 +47,12 @@ const Login: React.FC<loginProps> = (props) => {
   });
 
   const handleSubmit = (event: any) => {
-    console.log(values.email);
-    console.log(values.password);
     event.preventDefault();
     firebase
       .auth()
       .signInWithEmailAndPassword(values.email, values.password)
       .then((res) => {
+        context.setIsUserSigned(true);
         context.setUserData({
           uid: res.user?.uid || "",
           fullName: "",

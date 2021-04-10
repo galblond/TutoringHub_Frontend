@@ -11,8 +11,37 @@ import {
   MenuItem,
   Select,
   Slider,
+  TextField,
   Typography,
+  withStyles,
 } from "@material-ui/core";
+import Autocomplete from "@material-ui/lab/Autocomplete";
+import GeneralContext from "../../../contexts/GeneralContext";
+
+const CustomTextFieldOfAutocomplete = withStyles({
+  root: {
+    "& label.Mui-focused": {
+      color: "black",
+    },
+    "& .MuiInputBase-input": {
+      height: "35px",
+    },
+    "& .MuiInput-underline:after": {
+      // borderBottomColor: "#86c5ac",
+    },
+    "& .MuiOutlinedInput-root": {
+      "& fieldset": {
+        // borderColor: "#999085",
+      },
+      "&:hover fieldset": {
+        // borderColor: "#86c5ac",
+      },
+      "&.Mui-focused fieldset": {
+        // borderColor: "#86c5ac",
+      },
+    },
+  },
+})(TextField);
 
 interface IClassDetailsPopUpProps {
   classData: IClass | null;
@@ -22,7 +51,10 @@ interface IClassDetailsPopUpProps {
 }
 
 const ClassDetailsPopUp: React.FC<IClassDetailsPopUpProps> = (props: IClassDetailsPopUpProps) => {
+  const context = React.useContext(GeneralContext);
   const classes = useStyles();
+  const [presentedSubject, setPresentedSubject] = React.useState<string>(props.classData?.city || "");
+  const [presentedCity, setPresentedCity] = React.useState<string>(props.classData?.city || "");
   const [presentedAgeRange, setPresentedAgeRange] = React.useState<number[]>(
     props.classData ? [props.classData.ageRangeMin, props.classData.ageRangeMax] : [0, 0]
   );
@@ -34,20 +66,38 @@ const ClassDetailsPopUp: React.FC<IClassDetailsPopUpProps> = (props: IClassDetai
     props.onClose();
   };
 
-  const handleChangeAgeRangeSlider = (event: any, newValue: number | number[]) => {
-    setPresentedAgeRange(newValue as number[]);
-  };
-
   const getAgeRangeSliderValueText = (value: number) => {
     return `${value}`;
+  };
+
+  const handleChangeAgeRangeSlider = (event: any, newValue: number | number[]) => {
+    setPresentedAgeRange(newValue as number[]);
   };
 
   const handleChangeClassTypeSelection = (event: React.ChangeEvent<{ value: unknown }>) => {
     setpresentedClassType(event.target.value as classTypes);
   };
 
-  const handleChange = (prop: keyof IClass) => (event: React.ChangeEvent<HTMLInputElement>) => {
-    //TODO
+  const saveClass = () => {
+    if (props.classData) {
+      context.updateClass({
+        id: props.classData.id,
+        subject: presentedSubject,
+        city: presentedCity,
+        ageRangeMin: presentedAgeRange[0],
+        ageRangeMax: presentedAgeRange[1],
+        classType: presentedClassType,
+      });
+    } else {
+      context.createClass({
+        id: "",
+        subject: presentedSubject,
+        city: presentedCity,
+        ageRangeMin: presentedAgeRange[0],
+        ageRangeMax: presentedAgeRange[1],
+        classType: presentedClassType,
+      });
+    }
   };
 
   return (
@@ -62,21 +112,42 @@ const ClassDetailsPopUp: React.FC<IClassDetailsPopUpProps> = (props: IClassDetai
           Subject
         </InputLabel>
         <Input
+          required
           className={classes.input}
           type={"text"}
-          value={props.classData?.subject || ""}
-          onChange={handleChange("subject")}
+          value={presentedSubject}
+          onChange={(event) => setPresentedSubject(event.target.value as string)}
         />
       </FormControl>
       <FormControl>
         <InputLabel className={classes.inputLabel} shrink={true}>
           City
         </InputLabel>
-        <Input
-          className={classes.input}
-          type={"text"}
-          value={props.classData?.city || ""}
-          onChange={handleChange("city")}
+        <Autocomplete
+          id="city"
+          options={context.cities.map((city) => {
+            return { name: city.cityName };
+          })}
+          size="small"
+          autoComplete={true}
+          onInputChange={(event: React.ChangeEvent<{}>, value: string) => setPresentedCity(value)}
+          inputValue={presentedCity}
+          getOptionLabel={(option: { name: any }) => option.name}
+          style={{
+            zIndex: 99,
+            marginTop: "4vh",
+          }}
+          noOptionsText="No city was found"
+          renderInput={(params: any) => (
+            <CustomTextFieldOfAutocomplete
+              name="city"
+              variant="standard"
+              className={classes.input}
+              style={{ zIndex: 99 }}
+              required={true}
+              {...params}
+            />
+          )}
         />
       </FormControl>
       <FormControl className={classes.sliderFormControl}>
@@ -109,7 +180,7 @@ const ClassDetailsPopUp: React.FC<IClassDetailsPopUpProps> = (props: IClassDetai
           <MenuItem value={classTypes.frontal}>Frontal</MenuItem>
         </Select>
       </FormControl>
-      <Button> Save </Button>
+      <Button onClick={saveClass}> Save </Button>
     </Dialog>
   );
 };

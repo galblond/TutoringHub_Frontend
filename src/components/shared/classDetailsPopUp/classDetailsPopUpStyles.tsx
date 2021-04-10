@@ -29,6 +29,19 @@ const useStyles = makeStyles((theme: Theme) =>
       marginLeft: "3.26vh",
       paddingTop: "2vh",
     },
+    shippingContainerInput: {
+      "& option": {
+        fontFamily: "CircularStd",
+      },
+      "&:before": {
+        fontFamily: "CircularStd",
+        borderColor: "#999085",
+      },
+      "&:after": {
+        fontFamily: "CircularStd",
+        borderColor: "#86c5ac",
+      },
+    },
   })
 );
 

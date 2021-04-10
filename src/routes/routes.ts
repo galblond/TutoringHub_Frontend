@@ -3,8 +3,6 @@ import SignIn from "../components/layout/auth/register/register";
 import TabsMenu from "../components/layout/tabsMenu/tabsMenu";
 import HomePage from "../pages/homePage/homePage";
 import RegisterPage from "../pages/registerPage/registerPage";
-import SignInPage from "../pages/registerPage/registerPage";
-import TeacherManagementPage from "../pages/teacherManagementPage/teacherManagementPage";
 
 interface AppRoute {
   exactPath: string;
@@ -26,14 +24,9 @@ const routes: AppRoute[] = [
     isForSignedUsers: false,
   },
   {
-    exactPath: "/teacherManagement",
-    component: TeacherManagementPage,
-    isForSignedUsers: false, // TODO change to true when sign in process is working
-  },
-  {
     exactPath: "/tabsMenu",
     component: TabsMenu,
-    isForSignedUsers: false, // TODO change to true when sign in process is working
+    isForSignedUsers: true, // TODO change to true when sign in process is working
   },
 ];
 

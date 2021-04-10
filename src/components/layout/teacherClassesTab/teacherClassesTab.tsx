@@ -13,11 +13,12 @@ const TeacherClassesTab: React.FC<{}> = () => {
 
   useEffect(() => {
     context.getTeacherRelatedClasses();
+    if (context.cities.length === 0) context.getAllCities();
   }, []);
 
   return (
     <div>
-      {context.teacherRelatedClasses ? (
+      {context.teacherRelatedClasses && context.teacherRelatedClasses.length > 0 ? (
         <Grid container className={classes.classesGridContainer}>
           {context.teacherRelatedClasses.map((teacherRelatedClass, index) => (
             <Grid key={index} xs={6}>
@@ -26,7 +27,9 @@ const TeacherClassesTab: React.FC<{}> = () => {
           ))}
         </Grid>
       ) : (
-        <div>It's never too late to teach some new classes!</div>
+        <div style={{ height: "52vh", fontFamily: "CircularStdBold", fontSize: "5vh", color: "#00cc98" }}>
+          It's never too late to teach some new classes!
+        </div>
       )}
       <Button classes={{ root: classes.addClassButton }} onClick={() => setIsAddingClassPopUpOpen(true)}>
         <AddIcon />

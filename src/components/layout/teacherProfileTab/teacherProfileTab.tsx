@@ -119,7 +119,7 @@ const TeacherProfileTab: React.FC<{}> = () => {
                 onClick={handleClickShowPasswordConfirm}
                 onMouseDown={handleMouseDownPassword}
               >
-                {passwordValues.showPassword ? <Visibility /> : <VisibilityOff />}
+                {passwordValues.showPasswordConfirm ? <Visibility /> : <VisibilityOff />}
               </IconButton>
             </InputAdornment>
           }
