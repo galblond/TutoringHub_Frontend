@@ -1,5 +1,5 @@
 import React, { useContext, useEffect, useState } from "react";
-import { Button, FormControl, IconButton, Input, InputAdornment, InputLabel } from "@material-ui/core";
+import { Button, FormControl, Grid, IconButton, Input, InputAdornment, InputLabel } from "@material-ui/core";
 import { Lock, MailOutline, Visibility, VisibilityOff } from "@material-ui/icons";
 import GeneralContext from "../../../contexts/GeneralContext";
 import { IUserPresentedData } from "../../../services/TeacherService";
@@ -58,74 +58,84 @@ const TeacherProfileTab: React.FC<{}> = () => {
           onChange={handleChange("fullName")}
         />
       </FormControl> */}
-      <FormControl>
-        <InputLabel className={classes.inputLabel} shrink={true}>
-          Email
-        </InputLabel>
-        <Input
-          className={classes.input}
-          type={"text"}
-          value={context.userData.email || ""}
-          onChange={handleChange("email")}
-        />
-      </FormControl>
-      <FormControl>
-        <InputLabel className={classes.passwordFieldName} required htmlFor="standard-adornment-password">
-          Password
-        </InputLabel>
-        <Input
-          className={classes.passwordField}
-          id="standard-adornment-password"
-          type={passwordValues.showPassword ? "text" : "password"}
-          value={passwordValues.password}
-          onChange={handlePasswordChange("password")}
-          startAdornment={
-            <InputAdornment position="start">
-              <Lock />
-            </InputAdornment>
-          }
-          endAdornment={
-            <InputAdornment position="end">
-              <IconButton
-                aria-label="toggle password visibility"
-                onClick={handleClickShowPassword}
-                onMouseDown={handleMouseDownPassword}
-              >
-                {passwordValues.showPassword ? <Visibility /> : <VisibilityOff />}
-              </IconButton>
-            </InputAdornment>
-          }
-        />
-      </FormControl>
-      <FormControl>
-        <InputLabel className={classes.passwordFieldName} required htmlFor="standard-adornment-password">
-          Password Confirm
-        </InputLabel>
-        <Input
-          className={classes.passwordField}
-          id="standard-adornment-password"
-          type={passwordValues.showPasswordConfirm ? "text" : "password"}
-          value={passwordValues.passwordConfirm}
-          onChange={handlePasswordChange("passwordConfirm")}
-          startAdornment={
-            <InputAdornment position="start">
-              <Lock />
-            </InputAdornment>
-          }
-          endAdornment={
-            <InputAdornment position="end">
-              <IconButton
-                aria-label="toggle password visibility"
-                onClick={handleClickShowPasswordConfirm}
-                onMouseDown={handleMouseDownPassword}
-              >
-                {passwordValues.showPasswordConfirm ? <Visibility /> : <VisibilityOff />}
-              </IconButton>
-            </InputAdornment>
-          }
-        />
-      </FormControl>
-      <Button> Save Changes </Button>
+      <Grid container>
+        <Grid item xs={12}>
+          <FormControl>
+            <InputLabel className={classes.inputLabel} shrink={true}>
+              Email
+            </InputLabel>
+            <Input
+              className={classes.input}
+              type={"text"}
+              value={context.userData.email || ""}
+              onChange={handleChange("email")}
+            />
+          </FormControl>
+        </Grid>
+        <Grid item xs={12}>
+          <FormControl>
+            <InputLabel className={classes.passwordFieldName} required htmlFor="standard-adornment-password">
+              Password
+            </InputLabel>
+            <Input
+              className={classes.passwordField}
+              id="standard-adornment-password"
+              type={passwordValues.showPassword ? "text" : "password"}
+              value={passwordValues.password}
+              onChange={handlePasswordChange("password")}
+              startAdornment={
+                <InputAdornment position="start">
+                  <Lock />
+                </InputAdornment>
+              }
+              endAdornment={
+                <InputAdornment position="end">
+                  <IconButton
+                    aria-label="toggle password visibility"
+                    onClick={handleClickShowPassword}
+                    onMouseDown={handleMouseDownPassword}
+                  >
+                    {passwordValues.showPassword ? <Visibility /> : <VisibilityOff />}
+                  </IconButton>
+                </InputAdornment>
+              }
+            />
+          </FormControl>
+        </Grid>
+        <Grid item xs={12}>
+          <FormControl>
+            <InputLabel className={classes.passwordFieldName} required htmlFor="standard-adornment-password">
+              Password Confirm
+            </InputLabel>
+            <Input
+              className={classes.passwordField}
+              id="standard-adornment-password"
+              type={passwordValues.showPasswordConfirm ? "text" : "password"}
+              value={passwordValues.passwordConfirm}
+              onChange={handlePasswordChange("passwordConfirm")}
+              startAdornment={
+                <InputAdornment position="start">
+                  <Lock />
+                </InputAdornment>
+              }
+              endAdornment={
+                <InputAdornment position="end">
+                  <IconButton
+                    aria-label="toggle password visibility"
+                    onClick={handleClickShowPasswordConfirm}
+                    onMouseDown={handleMouseDownPassword}
+                  >
+                    {passwordValues.showPasswordConfirm ? <Visibility /> : <VisibilityOff />}
+                  </IconButton>
+                </InputAdornment>
+              }
+            />
+          </FormControl>
+        </Grid>
+        <Grid item xs={12}>
+          <Button> Save Changes </Button>
+        </Grid>
+      </Grid>
     </div>
   );
 };
