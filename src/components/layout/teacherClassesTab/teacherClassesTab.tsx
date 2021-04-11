@@ -5,6 +5,8 @@ import useStyles from "./teacherClassesTabStyles";
 import ClassCard from "../classCard/classCard";
 import AddIcon from "@material-ui/icons/Add";
 import ClassDetailsPopUp from "../../shared/classDetailsPopUp/classDetailsPopUp";
+import { LessonService } from "../../../services/LessonsService";
+import { IClass } from "../../../services/TeacherService";
 
 const TeacherClassesTab: React.FC<{}> = () => {
   const context = useContext(GeneralContext);
@@ -16,13 +18,22 @@ const TeacherClassesTab: React.FC<{}> = () => {
     if (context.cities.length === 0) context.getAllCities();
   }, []);
 
+  const deleteClass = (classToDelete: IClass) => {
+    LessonService.deleteClass(classToDelete._id)
+      .then((value) => {
+        console.log("The class was deleted successfully");
+        context.getTeacherRelatedClasses();
+      })
+      .catch((e) => console.log("e"));
+  };
+
   return (
     <div>
       {context.teacherRelatedClasses && context.teacherRelatedClasses.length > 0 ? (
         <Grid container className={classes.classesGridContainer}>
           {context.teacherRelatedClasses.map((teacherRelatedClass, index) => (
             <Grid key={index} xs={6}>
-              <ClassCard classData={teacherRelatedClass} />
+              <ClassCard classData={teacherRelatedClass} deleteClass={deleteClass} />
             </Grid>
           ))}
         </Grid>

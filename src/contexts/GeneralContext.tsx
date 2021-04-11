@@ -1,5 +1,5 @@
 import React from "react";
-import { IClass, ITeacher, IUserPresentedData } from "../services/TeacherService";
+import { IClass, IServerClass, ITeacher, IUserPresentedData } from "../services/TeacherService";
 import { ICity } from "../services/utils/citiesUtil";
 
 const isUserSignedType: boolean = false;
@@ -26,7 +26,7 @@ export default React.createContext({
   getTeacherRelatedClasses: () => {},
   getAllCities: () => {},
   cities: citiesType,
-  createClass: (classData: IClass) => {},
+  createClass: (classData: IServerClass) => {},
   updateClass: (classData: IClass) => {},
   currentlySignedTeacher: currentlySignedTeacherType,
   setCurrentlySignedTeacher: (teacher: ITeacher) => {},

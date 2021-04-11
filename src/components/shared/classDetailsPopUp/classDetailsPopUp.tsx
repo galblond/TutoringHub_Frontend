@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import useStyles from "./classDetailsPopUpStyles";
 import { classTypes, IClass } from "../../../services/TeacherService";
 import {
@@ -53,16 +53,29 @@ interface IClassDetailsPopUpProps {
 const ClassDetailsPopUp: React.FC<IClassDetailsPopUpProps> = (props: IClassDetailsPopUpProps) => {
   const context = React.useContext(GeneralContext);
   const classes = useStyles();
-  const [presentedSubject, setPresentedSubject] = React.useState<string>(props.classData?.city || "");
+  const [presentedSubject, setPresentedSubject] = React.useState<string>(props.classData?.subject || "");
   const [presentedCity, setPresentedCity] = React.useState<string>(props.classData?.city || "");
   const [presentedAgeRange, setPresentedAgeRange] = React.useState<number[]>(
-    props.classData && props.classData.ageRangeMin && props.classData.ageRangeMax
-      ? [props.classData.ageRangeMin, props.classData.ageRangeMax]
-      : [0, 0]
+    props.classData && props.classData.minAgeRange && props.classData.maxAgeRange
+      ? [props.classData.minAgeRange, props.classData.maxAgeRange]
+      : [1, 120]
   );
-  const [presentedClassType, setpresentedClassType] = React.useState<classTypes>(
+  const [presentedClassType, setPresentedClassType] = React.useState<classTypes>(
     props.classData && props.classData.classType ? props.classData.classType : classTypes.zoom
   );
+
+  useEffect(() => {
+    setPresentedSubject(props.classData?.subject || "");
+    setPresentedCity(
+      props.classData ? context.cities.find((city) => city.cityName === props.classData?.city)?.cityName || "" : ""
+    );
+    setPresentedAgeRange(
+      props.classData && props.classData.minAgeRange && props.classData.maxAgeRange
+        ? [props.classData.minAgeRange, props.classData.maxAgeRange]
+        : [1, 120]
+    );
+    setPresentedClassType(props.classData && props.classData.classType ? props.classData.classType : classTypes.zoom);
+  }, []);
 
   const handleClose = () => {
     props.onClose();
@@ -77,18 +90,17 @@ const ClassDetailsPopUp: React.FC<IClassDetailsPopUpProps> = (props: IClassDetai
   };
 
   const handleChangeClassTypeSelection = (event: React.ChangeEvent<{ value: unknown }>) => {
-    setpresentedClassType(event.target.value as classTypes);
+    setPresentedClassType(event.target.value as classTypes);
   };
 
   const saveClass = () => {
-    console.log("context.currentlySignedTeacher.id => ", context.currentlySignedTeacher._id);
     if (props.classData) {
       context.updateClass({
-        id: props.classData.id,
+        _id: props.classData._id,
         subject: presentedSubject,
         city: presentedCity,
-        ageRangeMin: presentedAgeRange[0],
-        ageRangeMax: presentedAgeRange[1],
+        minAgeRange: presentedAgeRange[0],
+        maxAgeRange: presentedAgeRange[1],
         classType: presentedClassType,
         teacherId: context.currentlySignedTeacher._id,
       });
@@ -97,8 +109,8 @@ const ClassDetailsPopUp: React.FC<IClassDetailsPopUpProps> = (props: IClassDetai
         id: "",
         subject: presentedSubject,
         city: presentedCity,
-        ageRangeMin: presentedAgeRange[0],
-        ageRangeMax: presentedAgeRange[1],
+        minAgeRange: presentedAgeRange[0],
+        maxAgeRange: presentedAgeRange[1],
         classType: presentedClassType,
         teacherId: context.currentlySignedTeacher._id,
       });
@@ -138,6 +150,7 @@ const ClassDetailsPopUp: React.FC<IClassDetailsPopUpProps> = (props: IClassDetai
           autoComplete={true}
           onInputChange={(event: React.ChangeEvent<{}>, value: string) => setPresentedCity(value)}
           inputValue={presentedCity}
+          defaultValue={{ name: props.classData?.city } || null}
           getOptionLabel={(option: { name: any }) => option.name}
           style={{
             zIndex: 99,

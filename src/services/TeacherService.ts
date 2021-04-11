@@ -34,16 +34,26 @@ export interface IUserPresentedData {
 }
 
 export interface IClass {
-  id: string;
+  _id: string;
   subject?: string;
   city?: string;
-  ageRangeMin?: number;
-  ageRangeMax?: number;
+  minAgeRange?: number;
+  maxAgeRange?: number;
   classType?: classTypes;
   teacherId?: string;
   // students?: Array<string>;
 }
 
+export interface IServerClass {
+  id: string;
+  subject?: string;
+  city?: string;
+  minAgeRange?: number;
+  maxAgeRange?: number;
+  classType?: classTypes;
+  teacherId?: string;
+  // students?: Array<string>;
+}
 export interface ITeacher {
   _id: string;
   name: string;
