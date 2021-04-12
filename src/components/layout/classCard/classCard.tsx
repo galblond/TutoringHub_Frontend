@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useContext, useState } from "react";
 import useStyles from "./classCardStyle";
 import { IClass } from "../../../services/TeacherService";
 import { Button } from "@material-ui/core";
@@ -10,12 +10,15 @@ import DialogActions from "@material-ui/core/DialogActions";
 import DialogContent from "@material-ui/core/DialogContent";
 import DialogContentText from "@material-ui/core/DialogContentText";
 import DialogTitle from "@material-ui/core/DialogTitle";
+import GeneralContext from "../../../contexts/GeneralContext";
 interface IClassCardProps {
   classData: IClass;
+  deleteClass: (classToDelete: IClass) => void;
 }
 
 const ClassCard: React.FC<IClassCardProps> = (props: IClassCardProps) => {
   const classes = useStyles();
+  const context = useContext(GeneralContext);
   const [isClassPopUpOpen, setIsClassPopUpOpen] = useState(false);
   const [isClassDeletePopUpOpen, setIsClassDeletePopUpOpen] = useState(false);
 
@@ -28,6 +31,7 @@ const ClassCard: React.FC<IClassCardProps> = (props: IClassCardProps) => {
   };
 
   const handleDelete = () => {
+    props.deleteClass(props.classData);
     setIsClassDeletePopUpOpen(false);
   };
 
@@ -37,9 +41,9 @@ const ClassCard: React.FC<IClassCardProps> = (props: IClassCardProps) => {
         <div className={classes.classSubject}>{props.classData.subject}</div>
         <div className={classes.classAdditionalData}>{props.classData.city}</div>
         <div className={classes.classAdditionalData}>
-          {props.classData.ageRangeMin &&
-            props.classData.ageRangeMax &&
-            props.classData.ageRangeMin.toString() + " - " + props.classData.ageRangeMax.toString()}
+          {props.classData.minAgeRange &&
+            props.classData.maxAgeRange &&
+            props.classData.minAgeRange.toString() + " - " + props.classData.maxAgeRange.toString()}
         </div>
         <div className={classes.classActionButtons}>
           <Button onClick={() => setIsClassPopUpOpen(true)}>
@@ -56,18 +60,18 @@ const ClassCard: React.FC<IClassCardProps> = (props: IClassCardProps) => {
         aria-labelledby="alert-dialog-title"
         aria-describedby="alert-dialog-description"
       >
-        <DialogTitle id="alert-dialog-title">{"Delete lesson"}</DialogTitle>
+        <DialogTitle id="alert-dialog-title">{"Delete class"}</DialogTitle>
         <DialogContent>
           <DialogContentText id="alert-dialog-description">
-            Are you sure you want to delete the lesson?
+            Are you sure you want to delete the class {props.classData.subject}?
           </DialogContentText>
         </DialogContent>
         <DialogActions>
           <Button onClick={handleClose} color="primary">
-            Disagree
+            Close
           </Button>
-          <Button onClick={handleClose} color="primary" autoFocus>
-            Agree
+          <Button onClick={handleDelete} color="primary" autoFocus>
+            Delete
           </Button>
         </DialogActions>
       </Dialog>

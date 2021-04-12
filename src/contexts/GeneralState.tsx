@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { LessonService } from "../services/LessonsService";
-import { IClass, ITeacher, IUserPresentedData } from "../services/TeacherService";
+import { IClass, IServerClass, ITeacher, IUserPresentedData } from "../services/TeacherService";
 import { getAllCities, ICity } from "../services/utils/citiesUtil";
 import GeneralContext from "./GeneralContext";
 
@@ -26,7 +26,7 @@ const GeneralState = (props: any) => {
     );
   };
 
-  const createClass = (classData: IClass) => {
+  const createClass = (classData: IServerClass) => {
     LessonService.createClass(classData).then((createdClass: IClass) =>
       setTeacherRelatedClassesState([...teacherRelatedClassesState, { ...createdClass }])
     );
@@ -36,7 +36,7 @@ const GeneralState = (props: any) => {
     let classesWithoutUpdatedClass: IClass[] = [];
     LessonService.updateClass(classData).then((updatedClass: IClass) => {
       classesWithoutUpdatedClass = teacherRelatedClassesState.filter(
-        (checkedClass) => checkedClass.id !== updatedClass.id
+        (checkedClass) => checkedClass._id !== updatedClass._id
       );
       setTeacherRelatedClassesState([...classesWithoutUpdatedClass, { ...updatedClass }]);
     });

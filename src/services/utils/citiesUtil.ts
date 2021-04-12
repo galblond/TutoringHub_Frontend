@@ -4,6 +4,13 @@ export interface ICity {
   cityName: string;
 }
 
+function camelize(str: string) {
+  return str.split(' ').map(word => word.replace(/(?:^\w|[A-Z]|\b\w)/g, function(word, index) {
+    return index === 0 ? word.toUpperCase() : word.toLowerCase();
+  }).replace(/\s+/g, '')).join(" ").trim();
+
+}
+
 export const getAllCities = async () => {
   let cities: ICity[] = [];
 
@@ -15,7 +22,7 @@ export const getAllCities = async () => {
     cities = result.data.result.records.map((record: any) => {
       if (record["שם_ישוב_לועזי"]) {
         let currentCity: ICity = {
-          cityName: record["שם_ישוב_לועזי"],
+          cityName: camelize(record["שם_ישוב_לועזי"]),
         }
         return currentCity;
       }

@@ -1,9 +1,9 @@
-import { IClass } from "./TeacherService";
+import { Area, IClass, IServerClass } from "./TeacherService";
 import AxiosInstance from "./utils/AxiosInstance";
 
 export class LessonService {
 
-  static async createClass(classData: IClass) {
+  static async createClass(classData: IServerClass) {
     let result;
 
     try {
@@ -12,7 +12,7 @@ export class LessonService {
     } catch (e) {
       throw e;
     }
-
+    
     return result;
   }
 
@@ -20,7 +20,7 @@ export class LessonService {
     let result;
 
     try {
-      result = await AxiosInstance.post("/lessons", classData);
+      result = await AxiosInstance.put("/lessons", classData);
       return classData;
     } catch (e) {
       throw e;
@@ -43,7 +43,7 @@ export class LessonService {
       console.log(e);
       throw e;
     }
-
+    
     return result.data;;
   }
 }
