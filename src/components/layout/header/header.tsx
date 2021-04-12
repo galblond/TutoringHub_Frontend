@@ -18,10 +18,10 @@ const Header = () => {
           <IconButton edge="start" className={classes.menuButton} color="inherit" aria-label="menu">
             <MenuIcon />
           </IconButton>
-          <Typography variant="h6" className={classes.title}>
+          <Typography variant="h6" align="justify" className={classes.title}>
             Tutoring Hub
           </Typography>
-          <Button color="inherit">{context.usersConnect}</Button>
+          <Button color="inherit">{`${context.usersConnect} users visited the site`}</Button>
         </Toolbar>
       </AppBar>
     </div>

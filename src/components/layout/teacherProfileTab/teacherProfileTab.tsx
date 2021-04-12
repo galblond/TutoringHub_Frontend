@@ -1,9 +1,27 @@
 import React, { useContext, useEffect, useState } from "react";
-import { Button, FormControl, Grid, IconButton, Input, InputAdornment, InputLabel } from "@material-ui/core";
+import {
+  Button,
+  Checkbox,
+  Dialog,
+  DialogActions,
+  DialogContent,
+  DialogContentText,
+  DialogTitle,
+  FormControl,
+  FormControlLabel,
+  Grid,
+  IconButton,
+  Input,
+  InputAdornment,
+  InputLabel,
+  MenuItem,
+  Select,
+} from "@material-ui/core";
 import { Lock, MailOutline, Visibility, VisibilityOff } from "@material-ui/icons";
 import GeneralContext from "../../../contexts/GeneralContext";
-import { IUserPresentedData } from "../../../services/TeacherService";
+import { Area, Gender, IUserPresentedData } from "../../../services/TeacherService";
 import useStyles from "./teacherProfileTabStyles";
+import firebase from "firebase";
 
 interface IUserPassword {
   password: string;
@@ -15,6 +33,8 @@ interface IUserPassword {
 const TeacherProfileTab: React.FC<{}> = () => {
   const context = useContext(GeneralContext);
   const classes = useStyles();
+  const [isClassPopUpOpen, setIsClassPopUpOpen] = useState(false);
+  const [popUpOpen, setPopUpOpen] = useState(false);
   const [passwordValues, setPasswordValues] = useState<IUserPassword>({
     password: context.userData.password || "",
     passwordConfirm: context.userData.passwordConfirm || "",
@@ -45,97 +65,125 @@ const TeacherProfileTab: React.FC<{}> = () => {
     setPasswordValues({ ...passwordValues, showPasswordConfirm: !passwordValues.showPasswordConfirm });
   };
 
+  const resetPassword = () => {
+    var auth = firebase.auth();
+    var emailAddress = context.userData.email;
+
+    auth
+      .sendPasswordResetEmail(emailAddress)
+      .then(function () {
+        setPopUpOpen(true);
+      })
+      .catch(function (error) {
+        // An error happened.
+      });
+  };
+
+  const handleClose = () => {
+    setPopUpOpen(false);
+  };
+
   return (
-    <div>
-      {/* <FormControl>
-        <InputLabel className={classes.inputLabel} shrink={true}>
+    <div style={{ maxHeight: "45vh" }}>
+      <FormControl>
+        <InputLabel required className={classes.inputLabel} shrink={true}>
           Full name
         </InputLabel>
         <Input
+          required
           className={classes.input}
           type={"text"}
-          value={context.teacherRelatedClasses.name || ""}
-          onChange={handleChange("fullName")}
+          value={context.currentlySignedTeacher.name || ""}
+          // onChange={handleChange("name")}
         />
-      </FormControl> */}
-      <Grid container>
-        <Grid item xs={12}>
-          <FormControl>
-            <InputLabel className={classes.inputLabel} shrink={true}>
-              Email
-            </InputLabel>
-            <Input
-              className={classes.input}
-              type={"text"}
-              value={context.userData.email || ""}
-              onChange={handleChange("email")}
+      </FormControl>
+      <FormControl style={{ marginTop: "3.5vh" }}>
+        <InputLabel className={classes.inputLabel} shrink={true}>
+          Gender
+        </InputLabel>
+        <Select
+          className={classes.input}
+          value={context.currentlySignedTeacher.gender}
+          // onChange={(event) => props.setTeacherData({ ...props.teacherData, gender: event.target.value as Gender })}
+        >
+          <MenuItem value={""} disabled>
+            Choose gender
+          </MenuItem>
+          <MenuItem value={Gender.Female}>Female</MenuItem>
+          <MenuItem value={Gender.Male}>Male</MenuItem>
+        </Select>
+      </FormControl>
+      <FormControl style={{ marginTop: "3.5vh" }}>
+        <InputLabel className={classes.inputLabel} shrink={true}>
+          Area
+        </InputLabel>
+        <Select
+          className={classes.input}
+          value={context.currentlySignedTeacher.areas}
+          multiple
+          // onChange={(event) => props.setTeacherData({ ...props.teacherData, areas: event.target.value as Area[] })}
+        >
+          <MenuItem value={""} disabled>
+            Choose your teaching area
+          </MenuItem>
+          <MenuItem value={Area.central}>Central</MenuItem>
+          <MenuItem value={Area.north}>North</MenuItem>
+          <MenuItem value={Area.south}>South</MenuItem>
+        </Select>
+      </FormControl>
+      <FormControl>
+        <InputLabel required className={classes.inputLabel} shrink={true}>
+          Describe your education
+        </InputLabel>
+        <Input
+          required
+          className={classes.input}
+          type={"text"}
+          value={context.currentlySignedTeacher.education || ""}
+          // onChange={handleChange("education")}
+        />
+        <FormControlLabel
+          classes={{
+            labelPlacementStart: classes.labelPlacementStart,
+          }}
+          control={
+            <Checkbox
+              checked={context.currentlySignedTeacher.availability}
+              // onChange={handleChange}
+              name="Availability"
+              color="primary"
             />
-          </FormControl>
-        </Grid>
-        <Grid item xs={12}>
-          <FormControl>
-            <InputLabel className={classes.passwordFieldName} required htmlFor="standard-adornment-password">
-              Password
-            </InputLabel>
-            <Input
-              className={classes.passwordField}
-              id="standard-adornment-password"
-              type={passwordValues.showPassword ? "text" : "password"}
-              value={passwordValues.password}
-              onChange={handlePasswordChange("password")}
-              startAdornment={
-                <InputAdornment position="start">
-                  <Lock />
-                </InputAdornment>
-              }
-              endAdornment={
-                <InputAdornment position="end">
-                  <IconButton
-                    aria-label="toggle password visibility"
-                    onClick={handleClickShowPassword}
-                    onMouseDown={handleMouseDownPassword}
-                  >
-                    {passwordValues.showPassword ? <Visibility /> : <VisibilityOff />}
-                  </IconButton>
-                </InputAdornment>
-              }
-            />
-          </FormControl>
-        </Grid>
-        <Grid item xs={12}>
-          <FormControl>
-            <InputLabel className={classes.passwordFieldName} required htmlFor="standard-adornment-password">
-              Password Confirm
-            </InputLabel>
-            <Input
-              className={classes.passwordField}
-              id="standard-adornment-password"
-              type={passwordValues.showPasswordConfirm ? "text" : "password"}
-              value={passwordValues.passwordConfirm}
-              onChange={handlePasswordChange("passwordConfirm")}
-              startAdornment={
-                <InputAdornment position="start">
-                  <Lock />
-                </InputAdornment>
-              }
-              endAdornment={
-                <InputAdornment position="end">
-                  <IconButton
-                    aria-label="toggle password visibility"
-                    onClick={handleClickShowPasswordConfirm}
-                    onMouseDown={handleMouseDownPassword}
-                  >
-                    {passwordValues.showPasswordConfirm ? <Visibility /> : <VisibilityOff />}
-                  </IconButton>
-                </InputAdornment>
-              }
-            />
-          </FormControl>
-        </Grid>
-        <Grid item xs={12}>
-          <Button> Save Changes </Button>
-        </Grid>
-      </Grid>
+          }
+          label="Availability"
+          labelPlacement="start"
+        />
+        <Button onClick={resetPassword}>Reset Password</Button>
+        <Button
+          onClick={() => {
+            return true;
+          }}
+        >
+          Save Changes
+        </Button>
+      </FormControl>
+      <Dialog
+        open={popUpOpen}
+        onClose={handleClose}
+        aria-labelledby="alert-dialog-title"
+        aria-describedby="alert-dialog-description"
+      >
+        <DialogTitle id="alert-dialog-title">{"Delete class"}</DialogTitle>
+        <DialogContent>
+          <DialogContentText id="alert-dialog-description">
+            You have received an email for password reset.
+          </DialogContentText>
+        </DialogContent>
+        <DialogActions>
+          <Button onClick={handleClose} color="primary">
+            Close
+          </Button>
+        </DialogActions>
+      </Dialog>
     </div>
   );
 };
