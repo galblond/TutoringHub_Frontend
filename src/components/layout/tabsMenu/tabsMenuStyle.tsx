@@ -15,12 +15,12 @@ const useStyles = makeStyles((theme: Theme) => ({
   },
   tabCard: {
     top: "11vh",
-    width: "80vh",
+    width: "50vw",
     height: "65vh",
     margin: "0 auto",
     backgroundColor: "white",
     boxShadow: "0px 10px 40px #00000024",
-    borderRadius: "2vh",
+    borderRadius: "4vh",
     position: "relative",
   },
   userNameTitle: {

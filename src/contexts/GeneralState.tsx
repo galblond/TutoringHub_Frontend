@@ -19,6 +19,7 @@ const GeneralState = (props: any) => {
   });
   const [teacherRelatedClassesState, setTeacherRelatedClassesState] = useState<IClass[]>([]);
   const [citiesState, setCitiesState] = useState<ICity[]>([]);
+  const [usersConnectState, setUsersConnectState] = useState<number>(0);
 
   const getTeacherRelatedClasses = () => {
     LessonService.getAllRelatedClasses(currentlySignedTeacherState._id).then((teacherRelatedClasses) =>
@@ -48,6 +49,10 @@ const GeneralState = (props: any) => {
       .catch((e) => console.log(e));
   };
 
+  const setUsersConnect = (users: number) => {
+    setUsersConnectState(users);
+  };
+
   return (
     <GeneralContext.Provider
       value={{
@@ -63,6 +68,8 @@ const GeneralState = (props: any) => {
         updateClass: updateClass,
         currentlySignedTeacher: currentlySignedTeacherState,
         setCurrentlySignedTeacher: setCurrentlySignedTeacherState,
+        usersConnect: usersConnectState,
+        setUsersConnect: setUsersConnect,
       }}
     >
       {props.children}

@@ -3,6 +3,7 @@ import { IClass, IServerClass, ITeacher, IUserPresentedData } from "../services/
 import { ICity } from "../services/utils/citiesUtil";
 
 const isUserSignedType: boolean = false;
+const usersConnect: number = 0;
 const userDataType: IUserPresentedData = {
   uid: "",
   fullName: "",
@@ -30,4 +31,6 @@ export default React.createContext({
   updateClass: (classData: IClass) => {},
   currentlySignedTeacher: currentlySignedTeacherType,
   setCurrentlySignedTeacher: (teacher: ITeacher) => {},
+  usersConnect: usersConnect,
+  setUsersConnect: (users: number) => {},
 });
