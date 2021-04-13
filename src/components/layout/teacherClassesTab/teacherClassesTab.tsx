@@ -14,7 +14,9 @@ const TeacherClassesTab: React.FC<{}> = () => {
   const [isAddingClassPopUpOpen, setIsAddingClassPopUpOpen] = useState(false);
 
   useEffect(() => {
-    context.getTeacherRelatedClasses();
+    if (context.teacherRelatedClasses !== []) {
+      context.getTeacherRelatedClasses();
+    }
     if (context.cities.length === 0) context.getAllCities();
   }, []);
 
