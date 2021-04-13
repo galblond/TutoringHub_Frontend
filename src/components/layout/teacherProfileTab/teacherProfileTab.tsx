@@ -19,7 +19,7 @@ import {
 } from "@material-ui/core";
 import { Lock, MailOutline, Visibility, VisibilityOff } from "@material-ui/icons";
 import GeneralContext from "../../../contexts/GeneralContext";
-import { Area, Gender, IUserPresentedData } from "../../../services/TeacherService";
+import { Area, Gender, IServerTeacher, ITeacher, IUserPresentedData } from "../../../services/TeacherService";
 import useStyles from "./teacherProfileTabStyles";
 import firebase from "firebase";
 
@@ -35,35 +35,14 @@ const TeacherProfileTab: React.FC<{}> = () => {
   const classes = useStyles();
   const [isClassPopUpOpen, setIsClassPopUpOpen] = useState(false);
   const [popUpOpen, setPopUpOpen] = useState(false);
-  const [passwordValues, setPasswordValues] = useState<IUserPassword>({
-    password: context.userData.password || "",
-    passwordConfirm: context.userData.passwordConfirm || "",
-    showPassword: false,
-    showPasswordConfirm: false,
+  const [teacherData, setTeacherData] = useState<IServerTeacher>({
+    id: context.currentlySignedTeacher._id,
+    name: context.currentlySignedTeacher.name,
+    education: context.currentlySignedTeacher.education,
+    availability: context.currentlySignedTeacher.availability,
+    gender: context.currentlySignedTeacher.gender,
+    areas: context.currentlySignedTeacher.areas,
   });
-
-  const handleChange = (prop: keyof IUserPresentedData) => (event: React.ChangeEvent<HTMLInputElement>) => {
-    context.setUserData({
-      ...context.userData,
-      [prop]: event.target.value,
-    });
-  };
-
-  const handlePasswordChange = (prop: keyof IUserPassword) => (event: React.ChangeEvent<HTMLInputElement>) => {
-    setPasswordValues({ ...passwordValues, [prop]: event.target.value });
-  };
-
-  const handleMouseDownPassword = (event: React.MouseEvent<HTMLButtonElement>) => {
-    event.preventDefault();
-  };
-
-  const handleClickShowPassword = () => {
-    setPasswordValues({ ...passwordValues, showPassword: !passwordValues.showPassword });
-  };
-
-  const handleClickShowPasswordConfirm = () => {
-    setPasswordValues({ ...passwordValues, showPasswordConfirm: !passwordValues.showPasswordConfirm });
-  };
 
   const resetPassword = () => {
     var auth = firebase.auth();
@@ -83,6 +62,12 @@ const TeacherProfileTab: React.FC<{}> = () => {
     setPopUpOpen(false);
   };
 
+  const handleChange = (prop: keyof ITeacher) => (event: React.ChangeEvent<HTMLInputElement>) => {
+    setTeacherData({
+      ...teacherData,
+      [prop]: event.target.value,
+    });
+  };
   return (
     <div style={{ maxHeight: "45vh" }}>
       <FormControl>
@@ -93,8 +78,8 @@ const TeacherProfileTab: React.FC<{}> = () => {
           required
           className={classes.input}
           type={"text"}
-          value={context.currentlySignedTeacher.name || ""}
-          // onChange={handleChange("name")}
+          value={teacherData.name || ""}
+          onChange={handleChange("name")}
         />
       </FormControl>
       <FormControl style={{ marginTop: "3.5vh" }}>
@@ -103,7 +88,9 @@ const TeacherProfileTab: React.FC<{}> = () => {
         </InputLabel>
         <Select
           className={classes.input}
-          value={context.currentlySignedTeacher.gender}
+          value={teacherData.gender}
+          onChange={(event) => setTeacherData({ ...teacherData, gender: event.target.value as Gender })}
+          // value={context.currentlySignedTeacher.gender}
           // onChange={(event) => props.setTeacherData({ ...props.teacherData, gender: event.target.value as Gender })}
         >
           <MenuItem value={""} disabled>
@@ -119,9 +106,9 @@ const TeacherProfileTab: React.FC<{}> = () => {
         </InputLabel>
         <Select
           className={classes.input}
-          value={context.currentlySignedTeacher.areas}
+          value={teacherData.areas}
           multiple
-          // onChange={(event) => props.setTeacherData({ ...props.teacherData, areas: event.target.value as Area[] })}
+          onChange={(event) => setTeacherData({ ...teacherData, areas: event.target.value as Area[] })}
         >
           <MenuItem value={""} disabled>
             Choose your teaching area
@@ -139,8 +126,8 @@ const TeacherProfileTab: React.FC<{}> = () => {
           required
           className={classes.input}
           type={"text"}
-          value={context.currentlySignedTeacher.education || ""}
-          // onChange={handleChange("education")}
+          value={teacherData.education || ""}
+          onChange={handleChange("education")}
         />
         <FormControlLabel
           classes={{
@@ -148,7 +135,7 @@ const TeacherProfileTab: React.FC<{}> = () => {
           }}
           control={
             <Checkbox
-              checked={context.currentlySignedTeacher.availability}
+              checked={teacherData.availability}
               // onChange={handleChange}
               name="Availability"
               color="primary"
