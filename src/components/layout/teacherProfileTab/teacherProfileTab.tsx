@@ -19,7 +19,14 @@ import {
 } from "@material-ui/core";
 import { Lock, MailOutline, Visibility, VisibilityOff } from "@material-ui/icons";
 import GeneralContext from "../../../contexts/GeneralContext";
-import { Area, Gender, IServerTeacher, ITeacher, IUserPresentedData } from "../../../services/TeacherService";
+import {
+  Area,
+  Gender,
+  IServerTeacher,
+  ITeacher,
+  IUserPresentedData,
+  TeacherService,
+} from "../../../services/TeacherService";
 import useStyles from "./teacherProfileTabStyles";
 import firebase from "firebase";
 
@@ -67,6 +74,18 @@ const TeacherProfileTab: React.FC<{}> = () => {
       ...teacherData,
       [prop]: event.target.value,
     });
+  };
+
+  const saveChanges = () => {
+    TeacherService.updateTeacher(teacherData)
+      .then((createdTeacher) => {
+        console.log("createdTeacher => ", createdTeacher);
+        context.setCurrentlySignedTeacher(createdTeacher);
+      })
+      .catch((error) => {
+        console.log(error.message);
+        alert(error.message);
+      });
   };
   return (
     <div style={{ maxHeight: "45vh" }}>
@@ -145,13 +164,7 @@ const TeacherProfileTab: React.FC<{}> = () => {
           labelPlacement="start"
         />
         <Button onClick={resetPassword}>Reset Password</Button>
-        <Button
-          onClick={() => {
-            return true;
-          }}
-        >
-          Save Changes
-        </Button>
+        <Button onClick={saveChanges}>Save Changes</Button>
       </FormControl>
       <Dialog
         open={popUpOpen}

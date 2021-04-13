@@ -66,7 +66,6 @@ export interface ITeacher {
   firebaseId?: string;
 }
 
-
 export interface IServerTeacher {
   id: string;
   name: string;
@@ -80,7 +79,6 @@ export interface IServerTeacher {
 }
 
 export class TeacherService {
-
   static async createTeacher(teacher: IServerTeacher) {
     let result;
 
@@ -92,13 +90,23 @@ export class TeacherService {
 
     return result.data;
   }
+  static async updateTeacher(teacher: IServerTeacher) {
+    let result;
 
+    try {
+      result = await AxiosInstance.put("/teachers", teacher);
+    } catch (e) {
+      throw e;
+    }
+
+    return result.data;
+  }
   static async getTeacherByFirebaseId(firebaseId: string) {
     let result;
 
     try {
       result = await AxiosInstance.get(`/teachers/firebaseId/${firebaseId}`);
-      console.log("teacherrrr => ", result.data[0])
+      console.log("teacherrrr => ", result.data[0]);
     } catch (e) {
       throw e;
     }
