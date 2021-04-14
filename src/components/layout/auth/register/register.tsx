@@ -98,6 +98,7 @@ const Register: React.FC<{}> = (props) => {
           .then(() => {
             console.log("ok");
             teacherData.firebaseId = userUid;
+            teacherData.availability = true;
             TeacherService.createTeacher(teacherData)
               .then((createdTeacher) => {
                 console.log("createdTeacher => ", createdTeacher);

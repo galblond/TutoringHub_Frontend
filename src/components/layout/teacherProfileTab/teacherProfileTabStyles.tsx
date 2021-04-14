@@ -126,6 +126,11 @@ const useStyles = makeStyles((theme: Theme) =>
     labelPlacementStart: {
       justifyContent: "space-between",
     },
+    addClassButton: {
+      "&:hover": {
+        backgroundColor: "#00d29c",
+      },
+    },
   })
 );
 

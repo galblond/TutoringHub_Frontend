@@ -40,8 +40,9 @@ interface IUserPassword {
 const TeacherProfileTab: React.FC<{}> = () => {
   const context = useContext(GeneralContext);
   const classes = useStyles();
-  const [isClassPopUpOpen, setIsClassPopUpOpen] = useState(false);
   const [popUpOpen, setPopUpOpen] = useState(false);
+  const [popUpSaveOpen, setPopSaveUpOpen] = useState(false);
+  const [checked, setChecked] = React.useState(context.currentlySignedTeacher.availability);
   const [teacherData, setTeacherData] = useState<IServerTeacher>({
     id: context.currentlySignedTeacher._id,
     name: context.currentlySignedTeacher.name,
@@ -69,7 +70,12 @@ const TeacherProfileTab: React.FC<{}> = () => {
     setPopUpOpen(false);
   };
 
+  const handleCloseSave = () => {
+    setPopSaveUpOpen(false);
+  };
+
   const handleChange = (prop: keyof ITeacher) => (event: React.ChangeEvent<HTMLInputElement>) => {
+    debugger;
     setTeacherData({
       ...teacherData,
       [prop]: event.target.value,
@@ -77,9 +83,11 @@ const TeacherProfileTab: React.FC<{}> = () => {
   };
 
   const saveChanges = () => {
-    TeacherService.updateTeacher(teacherData)
+    let teacherDataToDb = teacherData;
+    teacherDataToDb.availability = checked;
+    TeacherService.updateTeacher(teacherDataToDb)
       .then((createdTeacher) => {
-        console.log("createdTeacher => ", createdTeacher);
+        setPopSaveUpOpen(true);
         context.setCurrentlySignedTeacher(createdTeacher);
       })
       .catch((error) => {
@@ -87,6 +95,11 @@ const TeacherProfileTab: React.FC<{}> = () => {
         alert(error.message);
       });
   };
+
+  const handleChangeCheck = (event: React.ChangeEvent<HTMLInputElement>) => {
+    setChecked(event.target.checked);
+  };
+
   return (
     <div style={{ maxHeight: "45vh" }}>
       <FormControl>
@@ -152,19 +165,16 @@ const TeacherProfileTab: React.FC<{}> = () => {
           classes={{
             labelPlacementStart: classes.labelPlacementStart,
           }}
-          control={
-            <Checkbox
-              checked={teacherData.availability}
-              // onChange={handleChange}
-              name="Availability"
-              color="primary"
-            />
-          }
+          control={<Checkbox checked={checked} onChange={handleChangeCheck} name="Availability" color="primary" />}
           label="Availability"
           labelPlacement="start"
         />
-        <Button onClick={resetPassword}>Reset Password</Button>
-        <Button onClick={saveChanges}>Save Changes</Button>
+        <Button classes={{ root: classes.addClassButton }} onClick={resetPassword}>
+          Reset Password
+        </Button>
+        <Button classes={{ root: classes.addClassButton }} onClick={saveChanges}>
+          Save Changes
+        </Button>
       </FormControl>
       <Dialog
         open={popUpOpen}
@@ -180,6 +190,22 @@ const TeacherProfileTab: React.FC<{}> = () => {
         </DialogContent>
         <DialogActions>
           <Button onClick={handleClose} color="primary">
+            Close
+          </Button>
+        </DialogActions>
+      </Dialog>
+      <Dialog
+        open={popUpSaveOpen}
+        onClose={handleCloseSave}
+        aria-labelledby="alert-dialog-title"
+        aria-describedby="alert-dialog-description"
+      >
+        <DialogTitle id="alert-dialog-title">{"Delete class"}</DialogTitle>
+        <DialogContent>
+          <DialogContentText id="alert-dialog-description">The changes were saved successfuly</DialogContentText>
+        </DialogContent>
+        <DialogActions>
+          <Button onClick={handleCloseSave} color="primary">
             Close
           </Button>
         </DialogActions>

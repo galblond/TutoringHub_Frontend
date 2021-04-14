@@ -56,6 +56,7 @@ const Login: React.FC<loginProps> = (props) => {
         if (res.user) {
           TeacherService.getTeacherByFirebaseId(res.user.uid)
             .then((teacher) => {
+              debugger;
               context.setUserData({
                 uid: res.user?.uid || "",
                 fullName: "",
