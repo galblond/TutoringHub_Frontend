@@ -2,7 +2,6 @@ import { Area, IClass, IServerClass } from "./TeacherService";
 import AxiosInstance from "./utils/AxiosInstance";
 
 export class LessonService {
-
   static async createClass(classData: IServerClass) {
     let result;
 
@@ -12,7 +11,7 @@ export class LessonService {
     } catch (e) {
       throw e;
     }
-    
+
     return result;
   }
 
@@ -43,7 +42,20 @@ export class LessonService {
       console.log(e);
       throw e;
     }
-    
-    return result.data;;
+
+    return result.data;
+  }
+
+  static async getStatistics(teacherId: string) {
+    let result;
+
+    try {
+      result = await AxiosInstance.get(`/lessons/statistics/${teacherId}`);
+    } catch (e) {
+      console.log(e);
+      throw e;
+    }
+
+    return result.data;
   }
 }
