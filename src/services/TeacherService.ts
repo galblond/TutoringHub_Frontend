@@ -63,6 +63,7 @@ export interface ITeacher {
   areas?: Area[];
   tutoringSubjects?: IClass[];
   firebaseId?: string;
+  mail?: string;
 }
 
 export interface IServerTeacher {
@@ -75,6 +76,7 @@ export interface IServerTeacher {
   areas?: Area[];
   tutoringSubjects?: IClass[];
   firebaseId?: string;
+  mail?: string;
 }
 
 export class TeacherService {

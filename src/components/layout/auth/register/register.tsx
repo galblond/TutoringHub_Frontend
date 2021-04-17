@@ -119,6 +119,7 @@ const Register: React.FC<{}> = (props) => {
           .then(() => {
             teacherData.firebaseId = userUid;
             teacherData.availability = true;
+            teacherData.mail = values.email;
             TeacherService.createTeacher(teacherData)
               .then((createdTeacher) => {
                 context.setUserData({
