@@ -5,16 +5,21 @@ const useStyles = makeStyles((theme: Theme) =>
     root: {
       flexGrow: 1,
       backgroundColor: "#188e76",
+      color: "white",
     },
-    menuButton: {
-      marginRight: theme.spacing(2),
+    headerText: {
+      margin: "auto",
+      fontSize: "2.5vh",
+      fontFamily: "CircularStd",
     },
-    title: {
-      flexGrow: 1,
-      paddingLeft: "37.5vw",
+    headerTitle: {
+      marginTop: "-2vh",
+      fontSize: "3vh",
+      fontFamily: "CircularStd",
     },
-    appBar: {
-      backgroundColor: "#188e76",
+    headerTitleBold: {
+      fontSize: "4.7vh",
+      fontFamily: "CircularStdBold",
     },
   })
 );

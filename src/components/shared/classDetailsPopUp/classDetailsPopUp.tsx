@@ -1,6 +1,6 @@
 import React, { useEffect } from "react";
 import useStyles from "./classDetailsPopUpStyles";
-import { classTypes, IClass } from "../../../services/TeacherService";
+import { ClassType, IClass } from "../../../services/TeacherService";
 import {
   Button,
   Dialog,
@@ -60,8 +60,8 @@ const ClassDetailsPopUp: React.FC<IClassDetailsPopUpProps> = (props: IClassDetai
       ? [props.classData.minAgeRange, props.classData.maxAgeRange]
       : [1, 120]
   );
-  const [presentedClassType, setPresentedClassType] = React.useState<classTypes>(
-    props.classData && props.classData.classType ? props.classData.classType : classTypes.zoom
+  const [presentedClassType, setPresentedClassType] = React.useState<ClassType>(
+    props.classData && props.classData.classType ? props.classData.classType : ClassType.Zoom
   );
 
   useEffect(() => {
@@ -74,7 +74,7 @@ const ClassDetailsPopUp: React.FC<IClassDetailsPopUpProps> = (props: IClassDetai
         ? [props.classData.minAgeRange, props.classData.maxAgeRange]
         : [1, 120]
     );
-    setPresentedClassType(props.classData && props.classData.classType ? props.classData.classType : classTypes.zoom);
+    setPresentedClassType(props.classData && props.classData.classType ? props.classData.classType : ClassType.Zoom);
   }, []);
 
   const handleClose = () => {
@@ -90,7 +90,7 @@ const ClassDetailsPopUp: React.FC<IClassDetailsPopUpProps> = (props: IClassDetai
   };
 
   const handleChangeClassTypeSelection = (event: React.ChangeEvent<{ value: unknown }>) => {
-    setPresentedClassType(event.target.value as classTypes);
+    setPresentedClassType(event.target.value as ClassType);
   };
 
   const saveClass = () => {
@@ -195,8 +195,9 @@ const ClassDetailsPopUp: React.FC<IClassDetailsPopUpProps> = (props: IClassDetai
           value={presentedClassType}
           onChange={handleChangeClassTypeSelection}
         >
-          <MenuItem value={classTypes.zoom}>Zoom</MenuItem>
-          <MenuItem value={classTypes.frontal}>Frontal</MenuItem>
+          <MenuItem value={ClassType.Zoom}>Zoom</MenuItem>
+          <MenuItem value={ClassType.Teachers_Home}>Teacher's Home</MenuItem>
+          <MenuItem value={ClassType.Students_Home}>Student's Home</MenuItem>
         </Select>
       </FormControl>
       <Button onClick={saveClass}> Save </Button>

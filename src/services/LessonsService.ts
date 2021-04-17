@@ -7,12 +7,11 @@ export class LessonService {
 
     try {
       result = await AxiosInstance.post("/lessons", classData);
-      return classData;
     } catch (e) {
       throw e;
     }
 
-    return result;
+    return result.data;
   }
 
   static async updateClass(classData: IClass) {
@@ -20,12 +19,11 @@ export class LessonService {
 
     try {
       result = await AxiosInstance.put("/lessons", classData);
-      return classData;
     } catch (e) {
       throw e;
     }
 
-    return result;
+    return result.data;
   }
 
   static async deleteClass(id: string) {
@@ -67,7 +65,7 @@ export class LessonService {
       console.log(e);
       throw e;
     }
-    console.log("result.data => ", result.data);
+
     return result.data;
   }
 }

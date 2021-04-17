@@ -1,8 +1,9 @@
 import AxiosInstance from "./utils/AxiosInstance";
 
-export enum classTypes {
-  zoom,
-  frontal,
+export enum ClassType {
+  Zoom = 0,
+  Teachers_Home = 1,
+  Students_Home = 2,
 }
 
 export enum Gender {
@@ -39,9 +40,8 @@ export interface IClass {
   city?: string;
   minAgeRange?: number;
   maxAgeRange?: number;
-  classType?: classTypes;
+  classType?: ClassType;
   teacherId?: string;
-  // students?: Array<string>;
 }
 
 export interface IServerClass {
@@ -50,9 +50,8 @@ export interface IServerClass {
   city?: string;
   minAgeRange?: number;
   maxAgeRange?: number;
-  classType?: classTypes;
+  classType?: ClassType;
   teacherId?: string;
-  // students?: Array<string>;
 }
 export interface ITeacher {
   _id: string;

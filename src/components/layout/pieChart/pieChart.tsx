@@ -3,7 +3,7 @@ import * as d3 from "d3";
 import Pie from "../statistics/statistic";
 import { LessonService } from "../../../services/LessonsService";
 import GeneralContext from "../../../contexts/GeneralContext";
-import { classTypes } from "../../../services/TeacherService";
+import { ClassType } from "../../../services/TeacherService";
 import { Grid, Typography } from "@material-ui/core";
 
 interface IPieChartData {
@@ -16,7 +16,14 @@ const PieChartComponent: React.FC<{}> = (props) => {
   const generateData = async () => {
     const returnedData = await LessonService.getStatistics(context.currentlySignedTeacher._id);
     let arrangedData = returnedData.map((item: any) => ({
-      name: item._id === classTypes.zoom ? "Zoom" : "Frontal",
+      name:
+        item._id === ClassType.Zoom
+          ? "Zoom"
+          : ClassType.Teachers_Home
+          ? "Teacher's Home"
+          : ClassType.Students_Home
+          ? "Student's Home"
+          : "",
       value: item.value,
     }));
     setData(arrangedData);
@@ -41,14 +48,24 @@ const PieChartComponent: React.FC<{}> = (props) => {
 
   return (
     <Grid container style={{ overflowY: "scroll", height: "55vh" }}>
-      <Grid item xs={6}>
-        <Typography variant="h6">By classes types</Typography>
-        <Pie data={data} width={300} height={300} innerRadius={70} outerRadius={150} />
-      </Grid>
-      <Grid item xs={6}>
-        <Typography variant="h6">By classes cities</Typography>
-        <Pie data={cityStatisticsData} width={300} height={300} innerRadius={70} outerRadius={150} />
-      </Grid>
+      {data.length > 0 || cityStatisticsData.length > 0 ? (
+        <>
+          {data.length > 0 && (
+            <Grid item xs={6}>
+              <Typography variant="h6">By classes types</Typography>
+              <Pie data={data} width={300} height={300} innerRadius={70} outerRadius={150} />
+            </Grid>
+          )}
+          {cityStatisticsData.length > 0 && (
+            <Grid item xs={6}>
+              <Typography variant="h6">By classes cities</Typography>
+              <Pie data={cityStatisticsData} width={300} height={300} innerRadius={70} outerRadius={150} />
+            </Grid>
+          )}
+        </>
+      ) : (
+        <Typography variant="h6">Add classes to show some statistics about them</Typography>
+      )}
     </Grid>
   );
 };

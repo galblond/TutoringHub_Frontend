@@ -1,32 +1,18 @@
-// import { FormControl, IconButton, Input, InputAdornment, InputLabel, TextField } from "@material-ui/core";
-// import { Lock, MailOutline, Visibility, VisibilityOff } from "@material-ui/icons";
 import React, { useContext, useEffect, useState } from "react";
-// import useStyles from "../../../../pages/loginPage/loginPageStyles";
-// import AppMainBackgroundTop from "../../../../assets/images/appMainBackgroundTop.png";
 import { useHistory } from "react-router";
-// import ApartmentItem from "../../apartmentItem/apartmentItem";
 import useStyles from "./loginStyles";
-// import firebase from "firebase";
-// import { AuthContext } from "../../../../AuthProvider";
-import Avatar from "@material-ui/core/Avatar";
 import Button from "@material-ui/core/Button";
 import CssBaseline from "@material-ui/core/CssBaseline";
 import TextField from "@material-ui/core/TextField";
-import FormControlLabel from "@material-ui/core/FormControlLabel";
-import Checkbox from "@material-ui/core/Checkbox";
 import Link from "@material-ui/core/Link";
 import Grid from "@material-ui/core/Grid";
-import Box from "@material-ui/core/Box";
-import LockOutlinedIcon from "@material-ui/icons/LockOutlined";
 import Typography from "@material-ui/core/Typography";
-import { makeStyles } from "@material-ui/core/styles";
 import Container from "@material-ui/core/Container";
 import firebase from "firebase";
-import { AuthContext } from "../../../../AuthProvider";
-import { UserService } from "../../../../services/UserService";
-import { isContext } from "vm";
 import GeneralContext from "../../../../contexts/GeneralContext";
 import { TeacherService } from "../../../../services/TeacherService";
+import { Alert, AlertTitle } from "@material-ui/lab";
+import { Snackbar } from "@material-ui/core";
 
 interface loginProps {}
 
@@ -46,6 +32,14 @@ const Login: React.FC<loginProps> = (props) => {
     showPassword: false,
     email: "",
   });
+  const [message, setMessage] = useState({ isSuccess: false, isShown: false, text: "" });
+
+  const handleCloseMessage = (event?: React.SyntheticEvent, reason?: string) => {
+    if (reason === "clickaway") {
+      return;
+    }
+    setMessage({ ...message, isShown: false, text: "" });
+  };
 
   const handleSubmit = (event: any) => {
     event.preventDefault();
@@ -56,7 +50,6 @@ const Login: React.FC<loginProps> = (props) => {
         if (res.user) {
           TeacherService.getTeacherByFirebaseId(res.user.uid)
             .then((teacher) => {
-              debugger;
               context.setUserData({
                 uid: res.user?.uid || "",
                 fullName: "",
@@ -69,25 +62,14 @@ const Login: React.FC<loginProps> = (props) => {
               history.push("tabsMenu");
             })
             .catch((error) => {
-              console.log(error.message);
-              alert(error.message);
+              setMessage({ isSuccess: false, isShown: true, text: error.message });
             });
         }
       })
       .catch((error) => {
         console.log(error.message);
-        alert(error.message);
+        setMessage({ isSuccess: false, isShown: true, text: error.message });
       });
-  };
-
-  const handleClickShowPassword = () => {
-    setValues({ ...values, showPassword: !values.showPassword });
-  };
-  const handlePasswordChange = (prop: keyof UserData) => (event: React.ChangeEvent<HTMLInputElement>) => {
-    setValues({ ...values, [prop]: event.target.value });
-  };
-  const handleMouseDownPassword = (event: React.MouseEvent<HTMLButtonElement>) => {
-    event.preventDefault();
   };
 
   const handleChange = (event: any) => {
@@ -99,65 +81,72 @@ const Login: React.FC<loginProps> = (props) => {
   };
 
   return (
-    <Container component="main" maxWidth="xs">
-      <CssBaseline />
-      <div className={classes.paper}>
-        <Typography
-          component="h1"
-          variant="h5"
-          color="inherit"
-          onClick={() => {
-            history.push("tabsMenu");
-          }}
-        >
-          Sign in
-        </Typography>
-        <form className={classes.form} noValidate>
-          <TextField
-            variant="outlined"
-            margin="normal"
-            required
-            fullWidth
-            id="email"
-            label="Email Address"
-            name="email"
-            autoComplete="email"
-            autoFocus
-            onChange={handleChange}
-          />
-          <TextField
-            variant="outlined"
-            margin="normal"
-            required
-            fullWidth
-            name="password"
-            label="Password"
-            type="password"
-            id="password"
-            autoComplete="current-password"
-            onChange={handleChange}
-          />
-          {/* <FormControlLabel control={<Checkbox value="remember" color="primary" />} label="Remember me" /> */}
-          <Button
-            type="submit"
-            fullWidth
-            variant="contained"
-            color="primary"
-            onClick={handleSubmit}
-            className={classes.submit}
+    <>
+      <Container component="main" maxWidth="xs">
+        <CssBaseline />
+        <div className={classes.paper}>
+          <Typography
+            component="h1"
+            variant="h5"
+            color="inherit"
+            style={{ marginTop: "3vh" }}
+            onClick={() => {
+              history.push("tabsMenu");
+            }}
           >
-            Sign In
-          </Button>
-          <Grid container>
-            <Grid item>
-              <Link href="/#/register" variant="body2">
-                {"Don't have an account? Sign Up"}
-              </Link>
+            Sign in
+          </Typography>
+          <form className={classes.form} noValidate>
+            <TextField
+              variant="outlined"
+              margin="normal"
+              required
+              fullWidth
+              id="email"
+              label="Email Address"
+              name="email"
+              autoComplete="email"
+              autoFocus
+              onChange={handleChange}
+            />
+            <TextField
+              variant="outlined"
+              margin="normal"
+              required
+              fullWidth
+              name="password"
+              label="Password"
+              type="password"
+              id="password"
+              autoComplete="current-password"
+              onChange={handleChange}
+            />
+            <Button
+              type="submit"
+              fullWidth
+              variant="contained"
+              color="primary"
+              onClick={handleSubmit}
+              className={classes.submit}
+            >
+              Sign In
+            </Button>
+            <Grid container>
+              <Grid item>
+                <Link href="/#/register" variant="body2">
+                  {"Don't have an account? Sign Up"}
+                </Link>
+              </Grid>
             </Grid>
-          </Grid>
-        </form>
-      </div>
-    </Container>
+          </form>
+        </div>
+      </Container>
+      <Snackbar open={message.isShown} autoHideDuration={2500} onClose={handleCloseMessage}>
+        <Alert onClose={handleCloseMessage} variant="filled" severity={message.isSuccess ? "success" : "error"}>
+          <AlertTitle style={{ padding: "1px 10px" }}>{message.text}</AlertTitle>
+        </Alert>
+      </Snackbar>
+    </>
   );
 };
 

@@ -23,10 +23,9 @@ const TeacherClassesTab: React.FC<{}> = () => {
   const deleteClass = (classToDelete: IClass) => {
     LessonService.deleteClass(classToDelete._id)
       .then((value) => {
-        console.log("The class was deleted successfully");
         context.getTeacherRelatedClasses();
       })
-      .catch((e) => console.log("e"));
+      .catch((e) => console.log(e));
   };
 
   return (

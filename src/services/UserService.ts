@@ -14,13 +14,11 @@ export class UserService {
       .get()
       .then((doc) => {
         if (doc.exists) {
-          //   console.log("Document data:", doc.data());
           return doc.data();
         }
       })
       .catch((error) => {
         console.log("Error getting document:", error);
       });
-    //  let result = await AxiosInstance.get(`/Teacher/relatedClasses`);
   }
 }

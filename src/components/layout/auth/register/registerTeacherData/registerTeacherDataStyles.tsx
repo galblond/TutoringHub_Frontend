@@ -85,10 +85,10 @@ const useStyles = makeStyles((theme: Theme) => ({
     margin: theme.spacing(3, 0, 2),
   },
   signInCard: {
-    top: "3vw",
-    left: "29vw",
-    width: "40vw",
-    height: "75vh",
+    top: "2vh",
+    margin: "auto",
+    width: "50vh",
+    height: "68vh",
     backgroundColor: "white",
     boxShadow: "0px 10px 40px #00000024",
     borderRadius: 17,
@@ -107,7 +107,7 @@ const useStyles = makeStyles((theme: Theme) => ({
     marginRight: "3.26vh",
     marginBottom: "4.26vh",
     marginLeft: "3.26vh",
-    width: "30vw",
+    width: "40vh",
     height: "6vh",
   },
   passwordField: {

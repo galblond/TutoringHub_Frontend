@@ -75,7 +75,6 @@ const TeacherProfileTab: React.FC<{}> = () => {
   };
 
   const handleChange = (prop: keyof ITeacher) => (event: React.ChangeEvent<HTMLInputElement>) => {
-    debugger;
     setTeacherData({
       ...teacherData,
       [prop]: event.target.value,

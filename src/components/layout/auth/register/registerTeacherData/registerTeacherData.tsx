@@ -20,8 +20,8 @@ const RegisterTeacherData: React.FC<IRegisterTeacherDataProps> = (props: IRegist
 
   return (
     <div className={classes.signInCard}>
-      <Typography component="h1" variant="h5" color="inherit">
-        Fill you're details
+      <Typography component="h1" variant="h5" color="inherit" style={{ fontFamily: "CircularStd" }}>
+        Fill your details
       </Typography>
       <FormControl>
         <InputLabel required className={classes.inputLabel} shrink={true}>

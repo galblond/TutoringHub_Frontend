@@ -3,25 +3,35 @@ import useStyles from "./headerStyles";
 import AppBar from "@material-ui/core/AppBar";
 import Toolbar from "@material-ui/core/Toolbar";
 import Typography from "@material-ui/core/Typography";
-import Button from "@material-ui/core/Button";
-import IconButton from "@material-ui/core/IconButton";
-import MenuIcon from "@material-ui/icons/Menu";
 import GeneralContext from "../../../contexts/GeneralContext";
+import { Grid } from "@material-ui/core";
 
 const Header = () => {
   const classes = useStyles();
   const context = useContext(GeneralContext);
+
   return (
     <div className={classes.root}>
       <AppBar position="static" color="transparent">
         <Toolbar>
-          <IconButton edge="start" className={classes.menuButton} color="inherit" aria-label="menu">
-            <MenuIcon />
-          </IconButton>
-          <Typography variant="h6" align="justify" className={classes.title}>
-            Tutoring Hub
-          </Typography>
-          <Button color="inherit">{`${context.usersConnect} site views`}</Button>
+          <Grid container>
+            <Grid item xs={4} className={classes.headerText}>
+              {context.currentlySignedTeacher.name && (
+                <Typography variant="h6">Hello, {context.currentlySignedTeacher.name}</Typography>
+              )}
+            </Grid>
+            <Grid item xs={4}>
+              <Typography variant="h6" className={classes.headerTitleBold}>
+                Tutoring
+              </Typography>
+              <Typography variant="h6" className={classes.headerTitle}>
+                Hub
+              </Typography>
+            </Grid>
+            <Grid item xs={4} className={classes.headerText}>
+              <div>{`${context.usersConnect} Site Views`}</div>
+            </Grid>
+          </Grid>
         </Toolbar>
       </AppBar>
     </div>

@@ -15,7 +15,9 @@ const useStyles = makeStyles((theme: Theme) => ({
   },
   classSubject: {
     textAlign: "center",
-    font: "normal normal normal 4vh/6vh CircularStd",
+    font: "normal normal normal 3vh/6vh CircularStd",
+    overflowX: "scroll",
+    height: "6vh",
     color: "#198e76",
   },
   classAdditionalData: {
@@ -26,8 +28,8 @@ const useStyles = makeStyles((theme: Theme) => ({
   classActionButtons: {
     bottom: "1vh",
     position: "absolute",
-    marginLeft: "-1.1vh",
     display: "flex",
+    marginLeft: "1vh",
   },
   classActionButtonIcon: {
     fill: "#b7b7b7",
