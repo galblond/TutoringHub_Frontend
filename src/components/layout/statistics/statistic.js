@@ -35,7 +35,7 @@ const Pie = (props) => {
       .attr("transform", (d) => `translate(${createArc.centroid(d)})`)
       .style("fill", "white")
       .style("font-size", 10)
-      .text((d) => `${d._id}\n` + d.value);
+      .text((d, i) => `${props.data[i].name}\n` + d.value);
     //   .text((d) => "adi") ;
   }, [props.data]);
 

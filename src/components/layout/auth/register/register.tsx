@@ -101,7 +101,6 @@ const Register: React.FC<{}> = (props) => {
             teacherData.availability = true;
             TeacherService.createTeacher(teacherData)
               .then((createdTeacher) => {
-                console.log("createdTeacher => ", createdTeacher);
                 context.setUserData({
                   uid: userUid,
                   fullName: teacherData.name,

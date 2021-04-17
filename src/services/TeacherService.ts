@@ -106,7 +106,6 @@ export class TeacherService {
 
     try {
       result = await AxiosInstance.get(`/teachers/firebaseId/${firebaseId}`);
-      console.log("teacherrrr => ", result.data[0]);
     } catch (e) {
       throw e;
     }

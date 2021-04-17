@@ -55,7 +55,19 @@ export class LessonService {
       console.log(e);
       throw e;
     }
+    return result.data.results;
+  }
 
+  static async getCityStatistics(teacherId: string) {
+    let result;
+
+    try {
+      result = await AxiosInstance.get(`/lessons/cityStatistics/${teacherId}`);
+    } catch (e) {
+      console.log(e);
+      throw e;
+    }
+    console.log("result.data => ", result.data);
     return result.data;
   }
 }

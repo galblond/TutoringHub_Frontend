@@ -28,7 +28,6 @@ function App() {
 
   useEffect(() => {
     socket.on("FromAPI", (data: number) => {
-      console.log(data + "Users is connected");
       // setUsersConnectState(data);
       context.setUsersConnect(data);
     });

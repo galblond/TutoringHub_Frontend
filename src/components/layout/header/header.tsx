@@ -21,7 +21,7 @@ const Header = () => {
           <Typography variant="h6" align="justify" className={classes.title}>
             Tutoring Hub
           </Typography>
-          <Button color="inherit">{`${context.usersConnect} users visited the site`}</Button>
+          <Button color="inherit">{`${context.usersConnect} site views`}</Button>
         </Toolbar>
       </AppBar>
     </div>
