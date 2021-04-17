@@ -61,9 +61,7 @@ const TeacherProfileTab: React.FC<{}> = () => {
       .then(function () {
         setPopUpOpen(true);
       })
-      .catch(function (error) {
-        // An error happened.
-      });
+      .catch(function (error) {});
   };
 
   const handleClose = () => {
@@ -121,8 +119,6 @@ const TeacherProfileTab: React.FC<{}> = () => {
           className={classes.input}
           value={teacherData.gender}
           onChange={(event) => setTeacherData({ ...teacherData, gender: event.target.value as Gender })}
-          // value={context.currentlySignedTeacher.gender}
-          // onChange={(event) => props.setTeacherData({ ...props.teacherData, gender: event.target.value as Gender })}
         >
           <MenuItem value={""} disabled>
             Choose gender
@@ -181,7 +177,7 @@ const TeacherProfileTab: React.FC<{}> = () => {
         aria-labelledby="alert-dialog-title"
         aria-describedby="alert-dialog-description"
       >
-        <DialogTitle id="alert-dialog-title">{"Delete class"}</DialogTitle>
+        <DialogTitle id="alert-dialog-title">{"Reset Password"}</DialogTitle>
         <DialogContent>
           <DialogContentText id="alert-dialog-description">
             You have received an email for password reset.
@@ -199,7 +195,7 @@ const TeacherProfileTab: React.FC<{}> = () => {
         aria-labelledby="alert-dialog-title"
         aria-describedby="alert-dialog-description"
       >
-        <DialogTitle id="alert-dialog-title">{"Delete class"}</DialogTitle>
+        <DialogTitle id="alert-dialog-title">{"Personal Details Change"}</DialogTitle>
         <DialogContent>
           <DialogContentText id="alert-dialog-description">The changes were saved successfuly</DialogContentText>
         </DialogContent>

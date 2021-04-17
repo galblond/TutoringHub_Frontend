@@ -53,7 +53,6 @@ const useStyles = makeStyles((theme: Theme) => ({
     width: "85vw",
     height: "6vh",
     margin: 30,
-    // color: "white",
   },
   fieldColor: {
     color: "white",
@@ -78,7 +77,7 @@ const useStyles = makeStyles((theme: Theme) => ({
     backgroundColor: theme.palette.secondary.main,
   },
   form: {
-    width: "100%", // Fix IE 11 issue.
+    width: "100%",
     marginTop: theme.spacing(1),
   },
   submit: {

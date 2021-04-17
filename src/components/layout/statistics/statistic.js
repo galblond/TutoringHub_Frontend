@@ -36,7 +36,6 @@ const Pie = (props) => {
       .style("fill", "white")
       .style("font-size", 10)
       .text((d, i) => `${props.data[i].name}\n` + d.value);
-    //   .text((d) => "adi") ;
   }, [props.data]);
 
   return (

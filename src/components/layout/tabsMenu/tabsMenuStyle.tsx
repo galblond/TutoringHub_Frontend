@@ -1,22 +1,13 @@
 import { makeStyles, Theme } from "@material-ui/core/styles";
 
 const useStyles = makeStyles((theme: Theme) => ({
-  //   root: {
-  //     flexGrow: 1,
-  //     root: {
-  //         backgroundColor: theme.palette.background.paper,
-  //         width: 500,
-  //       },
-  //   },
   root: {
-    // backgroundColor: theme.palette.background.paper,
-    // width: 500,
     flexGrow: 1,
   },
   tabCard: {
     top: "11vh",
     width: "50vw",
-    height: "65vh",
+    height: "66.3vh",
     margin: "0 auto",
     backgroundColor: "white",
     boxShadow: "0px 10px 40px #00000024",

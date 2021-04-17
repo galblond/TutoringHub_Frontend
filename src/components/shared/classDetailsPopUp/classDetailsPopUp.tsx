@@ -26,19 +26,11 @@ const CustomTextFieldOfAutocomplete = withStyles({
     "& .MuiInputBase-input": {
       height: "35px",
     },
-    "& .MuiInput-underline:after": {
-      // borderBottomColor: "#86c5ac",
-    },
+    "& .MuiInput-underline:after": {},
     "& .MuiOutlinedInput-root": {
-      "& fieldset": {
-        // borderColor: "#999085",
-      },
-      "&:hover fieldset": {
-        // borderColor: "#86c5ac",
-      },
-      "&.Mui-focused fieldset": {
-        // borderColor: "#86c5ac",
-      },
+      "& fieldset": {},
+      "&:hover fieldset": {},
+      "&.Mui-focused fieldset": {},
     },
   },
 })(TextField);
@@ -78,6 +70,10 @@ const ClassDetailsPopUp: React.FC<IClassDetailsPopUpProps> = (props: IClassDetai
   }, []);
 
   const handleClose = () => {
+    setPresentedSubject("");
+    setPresentedCity("");
+    setPresentedAgeRange([1, 120]);
+    setPresentedClassType(ClassType.Zoom);
     props.onClose();
   };
 

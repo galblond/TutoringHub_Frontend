@@ -53,20 +53,12 @@ const useStyles = makeStyles((theme: Theme) => ({
     width: "85vw",
     height: "6vh",
     margin: 30,
-    // color: "white",
   },
+
   fieldColor: {
     color: "white",
   },
-  // passwordField: {
-  //   color: "white",
-  //   margin: 30,
-  //   width: "85vw",
-  //   height: "6vh",
-  // },
-  // passwordFieldName: {
-  //   marginLeft: 30,
-  // },
+
   paper: {
     marginTop: theme.spacing(8),
     display: "flex",
@@ -78,7 +70,7 @@ const useStyles = makeStyles((theme: Theme) => ({
     backgroundColor: theme.palette.secondary.main,
   },
   form: {
-    width: "100%", // Fix IE 11 issue.
+    width: "100%",
     marginTop: theme.spacing(1),
   },
   submit: {

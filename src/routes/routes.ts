@@ -26,7 +26,7 @@ const routes: AppRoute[] = [
   {
     exactPath: "/tabsMenu",
     component: TabsMenu,
-    isForSignedUsers: true, // TODO change to true when sign in process is working
+    isForSignedUsers: true,
   },
 ];
 
